@@ -1,0 +1,48 @@
+{
+	"name": "picex",
+	"version": "0.1.0",
+	"description": "Picex is a simple web image editor based on React, Fabricjs and Tailwindcss.",
+	"main": "index.js",
+	"scripts": {
+		"prepare": "husky",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"husky": {
+		"hooks": {
+			"commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+			"pre-commit": "lint-staged"
+		}
+	},
+	"lint-staged": {
+		"**/*.{ts,tsx}": [
+			"prettier-eslint --write"
+		]
+	},
+	"keywords": [],
+	"authors": [
+		{
+			"name": "Mox",
+			"email": "hexmox@gmail.com"
+		}
+	],
+	"license": "GPL-3.0-only",
+	"dependencies": {
+		"fabric": "^6.5.4",
+		"react": "^19.0.0"
+	},
+	"devDependencies": {
+		"@commitlint/cli": "^19.5.0",
+		"@commitlint/config-conventional": "^19.5.0",
+		"@typescript-eslint/eslint-plugin": "^8.19.0",
+		"@typescript-eslint/parser": "^8.19.0",
+		"eslint": "^8.57.1",
+		"eslint-config-prettier": "^9.1.0",
+		"eslint-plugin-prettier": "^5.2.1",
+		"husky": "^9.1.6",
+		"lint-staged": "^15.2.10",
+		"prettier": "^3.3.3",
+		"prettier-eslint": "^16.3.0",
+		"prettier-eslint-cli": "^8.0.1",
+		"semantic-release": "^24.2.0"
+	}
+}
