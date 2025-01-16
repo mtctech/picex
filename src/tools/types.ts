@@ -1,9 +1,12 @@
 import { ReactNode } from 'react';
-import { IPicexContext } from '../core/context';
+
+export type IPicexToolRenderParams = {
+	ctx: IPicexContext;
+	dispatch: IPicexDispatch;
+};
 
 export abstract class PicexTool {
 	abstract key: string;
-	abstract icon: string;
 	abstract name: string;
 	abstract visible: boolean;
 	abstract disabled: boolean;
@@ -16,7 +19,7 @@ export abstract class PicexTool {
 		this.disabled = v;
 	}
 
-	abstract renderIcon(ctx: IPicexContext): ReactNode;
+	abstract renderIcon(params: IPicexToolRenderParams): ReactNode;
 
-	abstract renderPanel(ctx: IPicexContext): ReactNode;
+	abstract renderPanel(params: IPicexToolRenderParams): ReactNode;
 }

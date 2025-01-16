@@ -9,9 +9,9 @@ export default function PicexLayout({
 	right: ReactNode;
 }>) {
 	return (
-		<section className="flex">
-			<div className="w-1/3">{left}</div>
-			<div className="flex-1">{children}</div>
+		<section className="flex h-full">
+			<div className="w-1/3 max-w-[396px]">{left}</div>
+			<div className="flex-1 relative">{children}</div>
 			<div className="w-1/5">{right}</div>
 		</section>
 	);

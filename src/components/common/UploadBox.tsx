@@ -10,15 +10,14 @@ type UploadRequestOption = Parameters<
 	NonNullable<DraggerProps['customRequest']>
 >['0'];
 
-export type UploadBoxProps = Pick<
-	UploadProps,
-	'accept' | 'beforeUpload' | 'customRequest'
-> & {
+export type UploadBoxProps = Partial<UploadProps> & {
 	icon?: React.ReactNode;
+	wordings?: React.ReactNode;
 };
 
 export function UploadBox({
 	icon,
+	wordings,
 	beforeUpload,
 	customRequest,
 	...rest
@@ -61,7 +60,7 @@ export function UploadBox({
 					{icon ?? <AiOutlinePlusCircle />}
 				</p>
 				<p className="ant-upload-text">
-					Click or drag file to this area to upload
+					{wordings ?? 'Click or drag file to this area to upload'}
 				</p>
 				{e && (
 					<Text
