@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Picex Demo</title>
+</head>
+
+<body>
+  <main id="app"></main>
+  <script type="module">
+    import React from 'react'
+    import * as ReactDOM from 'react-dom/client'
+    import {
+      PicexEditor
+    } from './src/index.ts'
+
+    ReactDOM.createRoot(document.getElementById('app')).render(React.createElement(PicexEditor, {}))
+  </script>
+</body>
+
+</html>
