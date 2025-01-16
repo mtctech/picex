@@ -11,12 +11,7 @@ module.exports = {
 		tsconfigRootDir: __dirname,
 	},
 	plugins: ['@typescript-eslint'],
-	extends: [
-		'next/core-web-vitals',
-		'plugin:eslint-plugin-next-on-pages/recommended',
-		'prettier',
-	],
-	plugins: ['eslint-plugin-next-on-pages'],
+	extends: ['next/core-web-vitals', 'prettier'],
 	rules: {
 		'@typescript-eslint/require-await': 'off',
 		'@typescript-eslint/no-unsafe-argument': 'off',
