@@ -1,41 +1,57 @@
-import React, { Children, PropsWithChildren, ReactNode } from 'react';
+import React, {
+	Children,
+	PropsWithChildren,
+	ReactNode,
+	useReducer,
+} from 'react';
 import PicexLayout from './Layout';
 import { PicexToolBar } from './ToolBar';
-import { PicexCanvas } from './Canvas';
+import { PicexDesign } from './Design';
 import { PicexProperties } from './Properties';
 import { PicexBlockTree } from './BlockTree';
-import { PicexTool } from '@/tools/types';
+import { PicexTool, PicexToolBackground, PicexToolResize } from '../tools';
+import {
+	DefaultPicexContext,
+	PicexContext,
+	PicexDispatchContext,
+} from '../core/context';
 
-function PicexEditor({
-	tools,
+export function PicexEditor({
+	tools = [new PicexToolBackground()],
 	children,
-	leftChildren,
-	rightChildren,
+	left,
+	right,
 }: PropsWithChildren<{
 	tools?: PicexTool[];
 	multiple?: boolean;
-	leftChildren?: ReactNode;
-	rightChildren?: ReactNode;
+	left?: PropsWithChildren<{}>;
+	right?: PropsWithChildren<{}>;
 }>) {
+	const [state, dispatch] = useReducer(() => {
+		return DefaultPicexContext;
+	}, DefaultPicexContext);
+
 	return (
-		<PicexLayout
-			left={
-				<>
-					<PicexToolBar tools={tools} />
-					{leftChildren}
-				</>
-			}
-			right={
-				<>
-					<PicexProperties />
-					<PicexBlockTree />
-					{rightChildren}
-				</>
-			}
-		>
-			<PicexCanvas>{children}</PicexCanvas>
-		</PicexLayout>
+		<PicexContext.Provider value={state}>
+			<PicexDispatchContext.Provider value={dispatch}>
+				<PicexLayout
+					left={
+						<>
+							<PicexToolBar tools={tools} />
+							{left?.children}
+						</>
+					}
+					right={
+						<>
+							<PicexProperties />
+							<PicexBlockTree />
+							{right?.children}
+						</>
+					}
+				>
+					<PicexDesign>{children}</PicexDesign>
+				</PicexLayout>
+			</PicexDispatchContext.Provider>
+		</PicexContext.Provider>
 	);
 }
-
-export default PicexEditor;

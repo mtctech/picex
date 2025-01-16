@@ -1,6 +1,6 @@
 import { PicexTool } from '../types';
 
-export class ToolBackground extends PicexTool {
+export class PicexToolBackground extends PicexTool {
 	key = 'background';
 	icon = 'background';
 	name = 'Background';
@@ -14,6 +14,6 @@ export class ToolBackground extends PicexTool {
 	 * 实现更改BlockCanvas纯色背景、图片背景的功能
 	 */
 	renderPanel() {
-		return;
+		return null;
 	}
 }

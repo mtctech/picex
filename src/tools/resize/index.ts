@@ -1,6 +1,6 @@
 import { PicexTool } from '../types';
 
-export class ToolResize extends PicexTool {
+export class PicexToolResize extends PicexTool {
 	key = 'resize';
 	icon = 'resize';
 	name = 'Resize';
@@ -14,6 +14,6 @@ export class ToolResize extends PicexTool {
 	 * 实现更改BlockCanvas大小的功能
 	 */
 	renderPanel() {
-		return;
+		return null;
 	}
 }
