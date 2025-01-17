@@ -44,7 +44,7 @@ function Panel({
 				options={Object.values(Tabs)}
 				onChange={setTab}
 			/>
-			{node}
+			<div className="picex-plugin-background">{node}</div>
 		</>
 	);
 }

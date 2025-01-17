@@ -1,10 +1,8 @@
-import { Tabs } from 'antd';
 import { IPicexToolRenderParams, PicexTool } from '../types';
 import Icon from './icon.svg?react';
-import Colours from './components/Colours';
-import Images from './components/Images';
 import { UploadBoxProps } from '@/components/common/UploadBox';
 import Panel from './components/Panel';
+import './index.css';
 
 export class PicexToolBackground extends PicexTool {
 	key = 'background';
