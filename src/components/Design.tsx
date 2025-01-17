@@ -1,5 +1,6 @@
 import { Button } from 'antd';
-import { AiOutlineUndo, AiOutlineRedo } from 'react-icons/ai';
+import Redo from '@/images/redo.svg?react';
+import Undo from '@/images/undo.svg?react';
 import React, { PropsWithChildren } from 'react';
 import { UploadBox, UploadBoxProps } from './common/UploadBox';
 import { usePicexCtx } from '../core/context';
@@ -18,22 +19,39 @@ export function PicexDesign({
 	const { blocks } = usePicexCtx();
 
 	return (
-		<div className="picex-design flex items-center justify-center">
-			<aside className="absolute top-0 left-0 flex items-center justify-start gap-2">
-				<Button.Group size="small">
-					<Button>
-						<AiOutlineUndo />
-					</Button>
-					<Button>
-						<AiOutlineRedo />
-					</Button>
-				</Button.Group>
+		<div className="picex-design h-full">
+			<aside className="absolute top-8 right-8 flex items-center justify-end gap-2">
+				{blocks.length ? (
+					<Button size="small">Upload a new image</Button>
+				) : null}
+				<Button
+					size="small"
+					color="primary"
+					shape="round"
+					disabled={!blocks.length}
+				>
+					Download
+				</Button>
 			</aside>
-			<aside className="absolute top-0 right-0 flex items-center justify-end gap-2">
-				<Button size="small">Upload a new image</Button>
-				<Button size="small">Download</Button>
+			<aside className="absolute top-8 left-1/2 -translate-x-1/2 flex items-center justify-start gap-2">
+				<div className="flex items-center gap-4">
+					<Button
+						color="default"
+						variant="filled"
+						className="w-[3.125rem] h-[3.125rem] p-0 flex items-center justify-center"
+					>
+						<Undo />
+					</Button>
+					<Button
+						color="default"
+						variant="filled"
+						className="w-[3.125rem] h-[3.125rem] p-0 flex items-center justify-center"
+					>
+						<Redo />
+					</Button>
+				</div>
 			</aside>
-			<div className="picex-design-content">
+			<div className="picex-design-content h-full flex items-center justify-center">
 				{!blocks.length ? (
 					<UploadBox
 						accept="image/*"

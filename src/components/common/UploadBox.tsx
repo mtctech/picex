@@ -1,8 +1,9 @@
-import React, { PropsWithChildren } from 'react';
+import React from 'react';
 import { Typography, DraggerProps, Upload, UploadProps } from 'antd';
 import { RcFile } from 'antd/es/upload';
-import { AiOutlinePlusCircle } from 'react-icons/ai';
+import { FiPlusCircle } from 'react-icons/fi';
 import { useRequest } from 'ahooks';
+import { cn } from '../../utils/cn';
 
 const { Text } = Typography;
 
@@ -12,12 +13,18 @@ type UploadRequestOption = Parameters<
 
 export type UploadBoxProps = Partial<UploadProps> & {
 	icon?: React.ReactNode;
+	iconClassName?: string;
 	wordings?: React.ReactNode;
+	wordingsClassName?: string;
+	className?: string;
 };
 
 export function UploadBox({
 	icon,
+	iconClassName,
 	wordings,
+	wordingsClassName,
+	className,
 	beforeUpload,
 	customRequest,
 	...rest
@@ -49,18 +56,29 @@ export function UploadBox({
 	const e = e1 || e2;
 
 	return (
-		<div className="w-full max-w-[422px]">
+		<div
+			className={cn(
+				'w-full text-center max-w-[422px] aspect-[422/553]',
+				className,
+			)}
+		>
 			<Upload.Dragger
 				{...rest}
+				className="h-full"
 				beforeUpload={check}
 				customRequest={upload}
 				showUploadList={false}
 			>
-				<p className="ant-upload-drag-icon">
-					{icon ?? <AiOutlinePlusCircle />}
+				<p
+					className={cn(
+						'mb-4 text-[#007AFF] flex items-center justify-center text-[40px]',
+						iconClassName,
+					)}
+				>
+					{icon ?? <FiPlusCircle />}
 				</p>
-				<p className="ant-upload-text">
-					{wordings ?? 'Click or drag file to this area to upload'}
+				<p className={cn('text-lg font-medium', wordingsClassName)}>
+					{wordings ?? 'Upload your image here'}
 				</p>
 				{e && (
 					<Text

@@ -3,7 +3,18 @@ import * as ReactDOM from 'react-dom/client';
 import { PicexEditor } from '../src';
 
 import './index.css';
+import { App, ConfigProvider } from 'antd';
 
 ReactDOM.createRoot(document.getElementById('app')!).render(
-	React.createElement(PicexEditor, {}),
+	<ConfigProvider
+		theme={{
+			token: {
+				fontFamily: 'inherit',
+			},
+		}}
+	>
+		<App className="h-full">
+			<PicexEditor />
+		</App>
+	</ConfigProvider>,
 );
