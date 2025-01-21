@@ -19,7 +19,7 @@ export function PicexCanvas({ children }: PropsWithChildren) {
 
 		const canvas = fcanvas.getElement();
 		if (!el.current.contains(canvas)) {
-			el.current.appendChild(canvas);
+			el.current.replaceChildren(canvas);
 		}
 
 		fcanvas.add(...(objects as Exclude<Block, BlockCanvas>[]));

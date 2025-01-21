@@ -1,12 +1,18 @@
 import { Button } from 'antd';
 import Redo from '@/images/redo.svg?react';
 import Undo from '@/images/undo.svg?react';
-import React, { PropsWithChildren } from 'react';
+import React, { PropsWithChildren, useCallback } from 'react';
 import { WaterMark } from '@/blocks/WaterMark';
 import { useWaterMark } from '@/hooks/useWaterMark';
 import { usePicexCtx, usePicexDispatch } from '@/core/context';
+import { cn } from '@/utils/cn';
 import { PicexCanvas } from './common/Canvas';
-import { UploadBox, UploadBoxProps } from './common/UploadBox';
+import { Operators } from './common/Operators';
+import {
+	UploadBox,
+	UploadBoxProps,
+	UploadChangeInfo,
+} from './common/UploadBox';
 /**
  * 主区域画布
  * @description
@@ -22,24 +28,37 @@ export function PicexDesign({
 }>) {
 	const { blocks } = usePicexCtx();
 	const dispatch = usePicexDispatch();
+	const onChange = useCallback(
+		(info: UploadChangeInfo) => {
+			const { fileList } = info;
+			if (
+				fileList.length &&
+				fileList.every((x) => x.status === 'done' && x.response)
+			) {
+				dispatch({
+					type: 'init',
+					images: fileList.map(({ response }) => {
+						return {
+							url: response!.url,
+							width: response!.width,
+							height: response!.height,
+						};
+					}),
+				});
+			}
+		},
+		[dispatch],
+	);
 
 	useWaterMark(watermark);
 
 	return (
 		<div className="picex-design h-full">
-			<aside className="absolute top-8 right-8 flex items-center justify-end gap-2">
-				{blocks.length ? (
-					<Button size="small">Upload a new image</Button>
-				) : null}
-				<Button
-					size="small"
-					color="primary"
-					shape="round"
-					disabled={!blocks.length}
-				>
-					Download
-				</Button>
-			</aside>
+			<Operators
+				blocks={blocks}
+				uploadProps={uploadProps}
+				onChange={onChange}
+			/>
 			<aside className="absolute top-8 left-1/2 -translate-x-1/2 flex items-center justify-start gap-2">
 				<div className="flex items-center gap-4">
 					<Button
@@ -60,29 +79,16 @@ export function PicexDesign({
 			</aside>
 			<div className="picex-design-content h-full flex items-center justify-center">
 				{!blocks.length ? (
-					<UploadBox
-						accept="image/*"
-						multiple={false}
-						{...uploadProps}
-						onChange={(info) => {
-							const { fileList } = info;
-							if (
-								fileList.length &&
-								fileList.every((x) => x.status === 'done' && x.response)
-							) {
-								dispatch({
-									type: 'init',
-									images: fileList.map(({ response }) => {
-										return {
-											url: response!.url,
-											width: response!.width,
-											height: response!.height,
-										};
-									}),
-								});
-							}
-						}}
-					/>
+					<div
+						className={cn('w-full text-center max-w-[422px] aspect-[422/553]')}
+					>
+						<UploadBox
+							accept="image/*"
+							multiple={false}
+							{...uploadProps}
+							onChange={onChange}
+						/>
+					</div>
 				) : (
 					<PicexCanvas />
 				)}

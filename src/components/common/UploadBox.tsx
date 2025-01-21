@@ -1,6 +1,6 @@
 import React from 'react';
 import { Spin, Typography, Upload, UploadProps } from 'antd';
-import { RcFile } from 'antd/es/upload';
+import { RcFile, UploadChangeParam, UploadFile } from 'antd/es/upload';
 import { FiPlusCircle } from 'react-icons/fi';
 import { useRequest } from 'ahooks';
 import { cn } from '../../utils/cn';
@@ -8,25 +8,32 @@ import { uploadFileByBase64 } from '@/utils/image';
 
 const { Text } = Typography;
 
-type UploadFileAttrs = {
+export type UploadFileAttrs = {
 	url: string;
 	width: number;
 	height: number;
 };
 
-type UploadRequestOption = Parameters<
+export type UploadChangeInfo = UploadChangeParam<UploadFile<UploadFileAttrs>>;
+
+export type UploadRequestOption = Parameters<
 	NonNullable<UploadProps<UploadFileAttrs>['customRequest']>
 >['0'];
 
-export type UploadBoxProps = Partial<UploadProps<UploadFileAttrs>> & {
+export type UploadBoxProps = Omit<
+	Partial<UploadProps<UploadFileAttrs>>,
+	'children'
+> & {
 	icon?: React.ReactNode;
 	iconClassName?: string;
 	wordings?: React.ReactNode;
 	wordingsClassName?: string;
 	className?: string;
+	children?: (x: { loading: boolean; error: Error | null }) => React.ReactNode;
 };
 
 export function UploadBox({
+	children,
 	icon,
 	iconClassName,
 	wordings,
@@ -61,47 +68,46 @@ export function UploadBox({
 		},
 	);
 	const e = e1 || e2;
+	const UploadWrapper = children ? Upload : Upload.Dragger;
+	const node = children?.({ loading, error: e || null });
 
 	return (
-		<div
-			className={cn(
-				'w-full text-center max-w-[422px] aspect-[422/553]',
-				className,
-			)}
+		<UploadWrapper
+			className="h-full"
+			{...rest}
+			beforeUpload={check}
+			customRequest={upload}
+			showUploadList={false}
 		>
-			<Upload.Dragger
-				{...rest}
-				className="h-full"
-				beforeUpload={check}
-				customRequest={upload}
-				showUploadList={false}
-			>
-				{loading ? (
-					<Spin />
-				) : (
-					<div>
-						<p
-							className={cn(
-								'mb-4 text-[#007AFF] flex items-center justify-center text-[40px]',
-								iconClassName,
-							)}
+			{node || (
+				<>
+					{loading ? (
+						<Spin />
+					) : (
+						<div>
+							<p
+								className={cn(
+									'mb-4 text-[#007AFF] flex items-center justify-center text-[40px]',
+									iconClassName,
+								)}
+							>
+								{icon ?? <FiPlusCircle />}
+							</p>
+							<p className={cn('text-lg font-medium', wordingsClassName)}>
+								{wordings ?? 'Upload your image here'}
+							</p>
+						</div>
+					)}
+					{e && (
+						<Text
+							type="danger"
+							className="absolute top-full left-0 py-2"
 						>
-							{icon ?? <FiPlusCircle />}
-						</p>
-						<p className={cn('text-lg font-medium', wordingsClassName)}>
-							{wordings ?? 'Upload your image here'}
-						</p>
-					</div>
-				)}
-				{e && (
-					<Text
-						type="danger"
-						className="absolute top-full left-0 py-2"
-					>
-						{e.message}
-					</Text>
-				)}
-			</Upload.Dragger>
-		</div>
+							{e.message}
+						</Text>
+					)}
+				</>
+			)}
+		</UploadWrapper>
 	);
 }
