@@ -14,7 +14,11 @@ ReactDOM.createRoot(document.getElementById('app')!).render(
 		}}
 	>
 		<App className="h-full">
-			<PicexEditor />
+			<PicexEditor
+				watermark={{
+					value: 'Picex',
+				}}
+			/>
 		</App>
 	</ConfigProvider>,
 );
