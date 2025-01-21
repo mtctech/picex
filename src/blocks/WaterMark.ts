@@ -47,6 +47,8 @@ export class BlockWaterMark extends Rect implements IBlock {
 			fontFamily: 'Arial',
 			fontSize: 12,
 			fill: 'rgba(0,0,0,0.3)',
+			stroke: 'rgba(255,255,255,0.3)',
+			strokeWidth: 1,
 			left: defaultOffsetX,
 			top: defaultOffsetY,
 			...props,

@@ -36,11 +36,17 @@ declare global {
 		block: BlockWaterMark;
 	};
 	type PicexContentActionAddBlock = { type: 'addBlock'; block: Block };
+	type PicexContentActionUpdateBlock = {
+		type: 'updateBlock';
+		block: Block;
+		payload: Partial<Block>;
+	};
 	type PicexContentActionRemoveBlock = { type: 'removeBlock'; block: Block };
 	type PicexContextAction =
 		| PicexContentActionInit
 		| PicexContentActionAddWatermark
 		| PicexContentActionAddBlock
+		| PicexContentActionUpdateBlock
 		| PicexContentActionRemoveBlock;
 
 	type IPicexDispatch = React.Dispatch<PicexContextAction>;

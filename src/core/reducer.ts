@@ -12,6 +12,8 @@ export const reducer = (state: IPicexContext, action: PicexContextAction) => {
 			return addWatermark(state, action);
 		case 'addBlock':
 			return state;
+		case 'updateBlock':
+			return updateBlock(state, action);
 		case 'removeBlock':
 			return state;
 	}
@@ -57,5 +59,19 @@ const addWatermark = (
 	return {
 		...state,
 		blocks: nextBlocks,
+	};
+};
+
+const updateBlock = (
+	state: IPicexContext,
+	action: PicexContentActionUpdateBlock,
+) => {
+	const { blocks } = state;
+	const { block, payload } = action;
+	block.set(payload);
+
+	return {
+		...state,
+		blocks,
 	};
 };

@@ -5,7 +5,7 @@ import { Block } from '@/blocks';
 
 export function PicexCanvas({ children }: PropsWithChildren) {
 	const ctx = usePicexCtx();
-	const dispatch = usePicexDispatch();
+	// const dispatch = usePicexDispatch();
 	const el = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
@@ -24,13 +24,7 @@ export function PicexCanvas({ children }: PropsWithChildren) {
 
 		fcanvas.add(...(objects as Exclude<Block, BlockCanvas>[]));
 		fcanvas.renderAll();
-
-		// dispatch({
-		// 	type: 'rendered',
-		// 	fcanvas,
-		// 	elCanvasWrapper: el.current,
-		// });
-	}, [ctx.blocks]);
+	}, [ctx]);
 
 	return (
 		<div
