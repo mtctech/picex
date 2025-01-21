@@ -1,10 +1,17 @@
 import React from 'react';
-import { Block } from '../blocks';
+import { Block, BlockWaterMark } from '../blocks';
 import { PicexTool } from '@/tools';
-import { StaticCanvas } from 'fabric';
+import {
+	ImageProps,
+	TextProps,
+	StaticCanvas,
+	ImageSource,
+	RectProps,
+} from 'fabric';
 
 declare global {
 	interface IPicexContext {
+		watermark: string;
 		blocks: Block[];
 		tools: PicexTool[];
 		currentBlock: Block | null;
@@ -16,14 +23,31 @@ declare global {
 		elPropertiesWrapper: React.RefObject<null | HTMLElement>;
 	}
 
+	type PicexContentActionInit = {
+		type: 'init';
+		images: Array<{
+			url: string;
+			width: number;
+			height: number;
+		}>;
+	};
+	type PicexContentActionAddWatermark = {
+		type: 'addWatermark';
+		block: BlockWaterMark;
+	};
+	type PicexContentActionAddBlock = { type: 'addBlock'; block: Block };
+	type PicexContentActionRemoveBlock = { type: 'removeBlock'; block: Block };
 	type PicexContextAction =
-		| { type: 'addBlock'; block: Block }
-		| { type: 'removeBlock'; block: Block };
+		| PicexContentActionInit
+		| PicexContentActionAddWatermark
+		| PicexContentActionAddBlock
+		| PicexContentActionRemoveBlock;
 
 	type IPicexDispatch = React.Dispatch<PicexContextAction>;
 }
 
 export const DefaultPicexContext: IPicexContext = {
+	watermark: 'Picex',
 	blocks: [],
 	tools: [],
 	currentBlock: null,

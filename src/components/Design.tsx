@@ -2,9 +2,11 @@ import { Button } from 'antd';
 import Redo from '@/images/redo.svg?react';
 import Undo from '@/images/undo.svg?react';
 import React, { PropsWithChildren } from 'react';
+import { WaterMark } from '@/blocks/WaterMark';
+import { useWaterMark } from '@/hooks/useWaterMark';
+import { usePicexCtx, usePicexDispatch } from '@/core/context';
+import { PicexCanvas } from './common/Canvas';
 import { UploadBox, UploadBoxProps } from './common/UploadBox';
-import { usePicexCtx } from '../core/context';
-
 /**
  * 主区域画布
  * @description
@@ -12,11 +14,16 @@ import { usePicexCtx } from '../core/context';
  * 2. 根据Blocks树渲染画布内容
  */
 export function PicexDesign({
+	watermark,
 	uploadProps,
 }: PropsWithChildren<{
+	watermark?: WaterMark;
 	uploadProps?: UploadBoxProps;
 }>) {
 	const { blocks } = usePicexCtx();
+	const dispatch = usePicexDispatch();
+
+	useWaterMark(watermark);
 
 	return (
 		<div className="picex-design h-full">
@@ -55,9 +62,30 @@ export function PicexDesign({
 				{!blocks.length ? (
 					<UploadBox
 						accept="image/*"
+						multiple={false}
 						{...uploadProps}
+						onChange={(info) => {
+							const { fileList } = info;
+							if (
+								fileList.length &&
+								fileList.every((x) => x.status === 'done' && x.response)
+							) {
+								dispatch({
+									type: 'init',
+									images: fileList.map(({ response }) => {
+										return {
+											url: response!.url,
+											width: response!.width,
+											height: response!.height,
+										};
+									}),
+								});
+							}
+						}}
 					/>
-				) : null}
+				) : (
+					<PicexCanvas />
+				)}
 			</div>
 		</div>
 	);

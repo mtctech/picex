@@ -1,35 +1,33 @@
-import React, {
-	Children,
-	PropsWithChildren,
-	ReactNode,
-	useReducer,
-} from 'react';
+import React, { PropsWithChildren, useReducer } from 'react';
 import PicexLayout from './Layout';
 import { PicexToolBar } from './ToolBar';
 import { PicexDesign } from './Design';
 import { PicexProperties } from './Properties';
 import { PicexBlockTree } from './BlockTree';
-import { PicexTool, PicexToolBackground, PicexToolResize } from '../tools';
+import { PicexTool, PicexToolBackground } from '../tools';
 import {
 	DefaultPicexContext,
 	PicexContext,
 	PicexDispatchContext,
-} from '../core/context';
+} from '@/core/context';
+import { reducer } from '@/core/reducer';
+import { WaterMark } from '@/blocks/WaterMark';
 
 export function PicexEditor({
 	tools = [new PicexToolBackground()],
+	multiple = false,
+	watermark,
 	children,
 	left,
 	right,
 }: PropsWithChildren<{
 	tools?: PicexTool[];
 	multiple?: boolean;
+	watermark?: WaterMark;
 	left?: PropsWithChildren<{}>;
 	right?: PropsWithChildren<{}>;
 }>) {
-	const [state, dispatch] = useReducer(() => {
-		return DefaultPicexContext;
-	}, DefaultPicexContext);
+	const [state, dispatch] = useReducer(reducer, DefaultPicexContext);
 
 	return (
 		<PicexContext.Provider value={state}>
@@ -49,7 +47,12 @@ export function PicexEditor({
 						</>
 					}
 				>
-					<PicexDesign>{children}</PicexDesign>
+					<PicexDesign
+						watermark={watermark}
+						uploadProps={{ multiple }}
+					>
+						{children}
+					</PicexDesign>
 				</PicexLayout>
 			</PicexDispatchContext.Provider>
 		</PicexContext.Provider>

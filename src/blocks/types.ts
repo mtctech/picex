@@ -3,14 +3,15 @@ import { FabricObjectProps } from 'fabric';
 export enum BlockTypes {
 	Background = 'background',
 	Image = 'image',
+	WaterMark = 'waterMark',
 }
 
 export type IBlock = Pick<
 	FabricObjectProps,
-	'left' | 'top' | 'originX' | 'originY' | 'width' | 'height'
+	'left' | 'top' | 'width' | 'height'
 > & {
-	type: BlockTypes;
+	blockType: BlockTypes;
 	background?: string;
-	move: (x: number, y: number) => Promise<void>;
-	resize: (w: number, h: number) => Promise<void>;
+	move?: (x: number, y: number) => void | Promise<void>;
+	resize?: (w: number, h: number) => void | Promise<void>;
 };

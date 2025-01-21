@@ -96,6 +96,9 @@ importers:
       tailwindcss:
         specifier: ^3.4.17
         version: 3.4.17
+      utility-types:
+        specifier: ^3.11.0
+        version: 3.11.0
       vite:
         specifier: ^6.0.7
         version: 6.0.7(@types/node@22.10.6)(jiti@2.4.2)(yaml@2.6.1)
@@ -3597,6 +3600,10 @@ packages:
 
   util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
+
+  utility-types@3.11.0:
+    resolution: {integrity: sha512-6Z7Ma2aVEWisaL6TvBCy7P8rm2LQoPv6dJ7ecIaIixHcwfbJ0x7mWdbcwlIM5IGQxPZSFYeqRCqlOOeKoJYMkw==}
+    engines: {node: '>= 4'}
 
   validate-npm-package-license@3.0.4:
     resolution: {integrity: sha512-DpKm2Ui/xN7/HQKCtpZxoRWBhZ9Z0kqtygG8XCgNQ8ZlDnxuQmWhj566j8fN4Cu3/JmbhsDo7fcAJq4s9h27Ew==}
@@ -7505,6 +7512,8 @@ snapshots:
     optional: true
 
   util-deprecate@1.0.2: {}
+
+  utility-types@3.11.0: {}
 
   validate-npm-package-license@3.0.4:
     dependencies:

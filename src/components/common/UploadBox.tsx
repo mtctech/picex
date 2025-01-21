@@ -1,17 +1,24 @@
 import React from 'react';
-import { Typography, DraggerProps, Upload, UploadProps } from 'antd';
+import { Spin, Typography, Upload, UploadProps } from 'antd';
 import { RcFile } from 'antd/es/upload';
 import { FiPlusCircle } from 'react-icons/fi';
 import { useRequest } from 'ahooks';
 import { cn } from '../../utils/cn';
+import { uploadFileByBase64 } from '@/utils/image';
 
 const { Text } = Typography;
 
+type UploadFileAttrs = {
+	url: string;
+	width: number;
+	height: number;
+};
+
 type UploadRequestOption = Parameters<
-	NonNullable<DraggerProps['customRequest']>
+	NonNullable<UploadProps<UploadFileAttrs>['customRequest']>
 >['0'];
 
-export type UploadBoxProps = Partial<UploadProps> & {
+export type UploadBoxProps = Partial<UploadProps<UploadFileAttrs>> & {
 	icon?: React.ReactNode;
 	iconClassName?: string;
 	wordings?: React.ReactNode;
@@ -26,7 +33,7 @@ export function UploadBox({
 	wordingsClassName,
 	className,
 	beforeUpload,
-	customRequest,
+	customRequest = uploadFileByBase64,
 	...rest
 }: UploadBoxProps) {
 	const { runAsync: check, error: e1 } = useRequest(
@@ -69,17 +76,23 @@ export function UploadBox({
 				customRequest={upload}
 				showUploadList={false}
 			>
-				<p
-					className={cn(
-						'mb-4 text-[#007AFF] flex items-center justify-center text-[40px]',
-						iconClassName,
-					)}
-				>
-					{icon ?? <FiPlusCircle />}
-				</p>
-				<p className={cn('text-lg font-medium', wordingsClassName)}>
-					{wordings ?? 'Upload your image here'}
-				</p>
+				{loading ? (
+					<Spin />
+				) : (
+					<div>
+						<p
+							className={cn(
+								'mb-4 text-[#007AFF] flex items-center justify-center text-[40px]',
+								iconClassName,
+							)}
+						>
+							{icon ?? <FiPlusCircle />}
+						</p>
+						<p className={cn('text-lg font-medium', wordingsClassName)}>
+							{wordings ?? 'Upload your image here'}
+						</p>
+					</div>
+				)}
 				{e && (
 					<Text
 						type="danger"
