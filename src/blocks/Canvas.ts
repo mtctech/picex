@@ -1,6 +1,6 @@
 import { FabricImage, Pattern, StaticCanvas, TFiller } from 'fabric';
 import { BlockTypes, IBlock } from './types';
-import { getTransparentUnitCanvas, TRANSPARENT } from '@/utils/image';
+import { getTransparentUnitCanvas } from '@/utils/image';
 
 /**
  * 画布根块
@@ -9,7 +9,7 @@ import { getTransparentUnitCanvas, TRANSPARENT } from '@/utils/image';
 export class BlockCanvas extends StaticCanvas implements IBlock {
 	blockType = BlockTypes.Background;
 
-	backgroundColor = (() => {
+	backgroundColor: TFiller | string = (() => {
 		const canvas = getTransparentUnitCanvas();
 
 		return new Pattern({

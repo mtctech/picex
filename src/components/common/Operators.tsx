@@ -1,6 +1,7 @@
 import { Button, Tooltip } from 'antd';
 import { UploadBox, UploadBoxProps, UploadChangeInfo } from './UploadBox';
 import { Block } from '@/index';
+import { useDownload } from '@/hooks/useDownload';
 
 export function Operators({
 	blocks,
@@ -11,6 +12,8 @@ export function Operators({
 	uploadProps: UploadBoxProps | undefined;
 	onChange: (info: UploadChangeInfo) => void;
 }) {
+	const { run: download, loading: downloading } = useDownload();
+
 	return (
 		<aside className="absolute top-8 right-8 flex items-center justify-end gap-2">
 			{blocks.length ? (
@@ -48,6 +51,8 @@ export function Operators({
 				color="primary"
 				shape="round"
 				disabled={!blocks.length}
+				loading={downloading}
+				onClick={() => download('image/png')}
 			>
 				Download
 			</Button>
