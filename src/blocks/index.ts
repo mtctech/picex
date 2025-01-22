@@ -1,7 +1,12 @@
 export * from './types';
-import { BlockCanvas } from './Canvas';
+import { BlockViewport } from './Viewport';
+import { BlockBackground } from './Background';
 import { BlockImage } from './Image';
 import { BlockWaterMark } from './WaterMark';
 
-export type Block = BlockCanvas | BlockImage | BlockWaterMark;
-export { BlockCanvas, BlockImage, BlockWaterMark };
+export type Block =
+	| BlockViewport
+	| BlockBackground
+	| BlockImage
+	| BlockWaterMark;
+export { BlockViewport, BlockBackground, BlockImage, BlockWaterMark };

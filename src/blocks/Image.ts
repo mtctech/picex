@@ -1,5 +1,6 @@
 import { FabricImage } from 'fabric';
 import { BlockTypes, IBlock } from './types';
+import { DEBUG } from '@/utils/consts';
 
 /**
  * 图片块
@@ -7,4 +8,10 @@ import { BlockTypes, IBlock } from './types';
  */
 export class BlockImage extends FabricImage implements IBlock {
 	blockType = BlockTypes.Image;
+
+	selectable = true;
+
+	hasControls = true;
+
+	stroke = DEBUG ? 'green' : null;
 }

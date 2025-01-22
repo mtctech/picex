@@ -1,7 +1,7 @@
 import { Button } from 'antd';
 import Redo from '@/images/redo.svg?react';
 import Undo from '@/images/undo.svg?react';
-import React, { PropsWithChildren, useCallback } from 'react';
+import React, { PropsWithChildren, useCallback, useRef } from 'react';
 import { WaterMark } from '@/blocks/WaterMark';
 import { useWaterMark } from '@/hooks/useWaterMark';
 import { usePicexCtx, usePicexDispatch } from '@/core/context';
@@ -13,6 +13,8 @@ import {
 	UploadBoxProps,
 	UploadChangeInfo,
 } from './common/UploadBox';
+import { useSize } from 'ahooks';
+import { IBlock } from '@/blocks/types';
 /**
  * 主区域画布
  * @description
@@ -20,14 +22,21 @@ import {
  * 2. 根据Blocks树渲染画布内容
  */
 export function PicexDesign({
+	viewport = {
+		width: 820,
+		height: 590,
+	},
 	watermark,
 	uploadProps,
 }: PropsWithChildren<{
+	viewport?: Pick<IBlock, 'width' | 'height'>;
 	watermark?: WaterMark;
 	uploadProps?: UploadBoxProps;
 }>) {
 	const { blocks } = usePicexCtx();
 	const dispatch = usePicexDispatch();
+	// const el = useRef<HTMLDivElement>(null);
+	// const size = useSize(el);
 	const onChange = useCallback(
 		(info: UploadChangeInfo) => {
 			const { fileList } = info;
@@ -37,6 +46,7 @@ export function PicexDesign({
 			) {
 				dispatch({
 					type: 'init',
+					viewport,
 					images: fileList.map(({ response }) => {
 						return {
 							url: response!.url,
@@ -77,7 +87,10 @@ export function PicexDesign({
 					</Button>
 				</div>
 			</aside>
-			<div className="picex-design-content h-full flex items-center justify-center">
+			<div
+				// ref={el}
+				className="picex-design-content h-full flex items-center justify-center"
+			>
 				{!blocks.length ? (
 					<div
 						className={cn('w-full text-center max-w-[422px] aspect-[422/553]')}

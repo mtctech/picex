@@ -26,6 +26,12 @@ export interface WaterMark {
 export class BlockWaterMark extends Rect implements IBlock {
 	blockType = BlockTypes.WaterMark;
 
+	selectable = false;
+
+	hasControls = false;
+
+	hoverCursor = null;
+
 	static async fromURL(
 		{ value, props }: WaterMark,
 		rectOpts: Required<Partial<RectProps>, 'width' | 'height'>,
@@ -103,9 +109,5 @@ export class BlockWaterMark extends Rect implements IBlock {
 			...options,
 			fill: pattern,
 		});
-	}
-
-	resize(w: number, h: number) {
-		this.set({ width: w, height: h });
 	}
 }

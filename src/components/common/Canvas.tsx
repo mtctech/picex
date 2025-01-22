@@ -1,35 +1,59 @@
 import React, { PropsWithChildren, useEffect, useRef } from 'react';
 import { usePicexCtx, usePicexDispatch } from '@/core/context';
-import { BlockCanvas } from '@/blocks';
-import { Block } from '@/blocks';
+import { Canvas } from 'fabric';
 
 export function PicexCanvas({ children }: PropsWithChildren) {
 	const ctx = usePicexCtx();
-	// const dispatch = usePicexDispatch();
-	const el = useRef<HTMLDivElement>(null);
+	const dispatch = usePicexDispatch();
+	const { elCanvasWrapper } = ctx;
+	const elCanvas = useRef<HTMLCanvasElement>(null);
+	const refCanvas = useRef<Canvas>(null);
 
 	useEffect(() => {
-		if (!el.current) {
+		if (refCanvas.current) {
 			return;
 		}
-		const [fcanvas, ...objects] = ctx.blocks;
-		if (!fcanvas || !(fcanvas instanceof BlockCanvas)) {
+		const fcanvas = new Canvas(elCanvas.current!, {
+			width: window.screen.width,
+			height: window.screen.height,
+			backgroundColor: 'transparent',
+		});
+
+		refCanvas.current = fcanvas;
+
+		dispatch({
+			type: 'mount',
+			fcanvas,
+		});
+	}, []);
+
+	useEffect(() => {
+		if (!elCanvas.current) {
+			return;
+		}
+		const fcanvas = ctx.fcanvas || refCanvas.current;
+		const { blocks } = ctx;
+		if (!fcanvas || !blocks.length) {
 			return;
 		}
 
-		const canvas = fcanvas.getElement();
-		if (!el.current.contains(canvas)) {
-			el.current.replaceChildren(canvas);
-		}
-
-		fcanvas.add(...(objects as Exclude<Block, BlockCanvas>[]));
+		blocks.forEach((block) => {
+			if (fcanvas.contains(block)) {
+				fcanvas.remove(block);
+			}
+			fcanvas.add(block);
+			fcanvas.centerObject(block);
+		});
+		fcanvas.clipPath = blocks[0];
 		fcanvas.renderAll();
 	}, [ctx]);
 
 	return (
 		<div
-			ref={el}
-			className="picex-canvas"
-		></div>
+			ref={elCanvasWrapper}
+			className="picex-canvas w-full h-full overflow-hidden flex justify-center items-center"
+		>
+			<canvas ref={elCanvas} />
+		</div>
 	);
 }

@@ -12,6 +12,7 @@ import {
 } from '@/core/context';
 import { reducer } from '@/core/reducer';
 import { WaterMark } from '@/blocks/WaterMark';
+import { IBlock } from '@/blocks/types';
 
 export function PicexEditor({
 	tools = [new PicexToolBackground()],
@@ -23,6 +24,7 @@ export function PicexEditor({
 }: PropsWithChildren<{
 	tools?: PicexTool[];
 	multiple?: boolean;
+	viewport?: Pick<IBlock, 'width' | 'height'>;
 	watermark?: WaterMark;
 	left?: PropsWithChildren<{}>;
 	right?: PropsWithChildren<{}>;

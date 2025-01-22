@@ -1,5 +1,5 @@
 import type { UploadFileAttrs } from '@/components/common/UploadBox';
-import { BlockCanvas } from '@/blocks/Canvas';
+import { BlockViewport } from '@/blocks/Viewport';
 import { FabricImage } from 'fabric';
 import { useLocalStorageState } from 'ahooks';
 import { AiOutlineUpload } from 'react-icons/ai';
@@ -7,41 +7,59 @@ import React, { useCallback, useRef, useState } from 'react';
 import { Upload, UploadProps } from 'antd';
 import { uploadFileByBase64 } from '@/utils/image';
 import { cn } from '@/utils/cn';
+import { BlockBackground } from '@/blocks/Background';
 
 function Images({
+	block,
+	setBlock,
 	ctx,
 	dispatch,
 	customRequest = uploadFileByBase64,
 	...rest
 }: Partial<UploadProps> & {
+	block: null | BlockBackground;
+	setBlock: (block: BlockBackground) => void;
 	ctx: IPicexContext;
 	dispatch: IPicexDispatch;
 }) {
-	const rootBlock = ctx.blocks[0] as BlockCanvas;
-
+	const viewport = ctx.blocks[0];
 	const lastestBg = useRef('');
 	const [bgImage, setBgImage] = useState('');
 	const setBgImage4Root = useCallback(
 		(v: string) => {
-			if (!rootBlock) {
+			if (!viewport) {
 				return;
 			}
 			lastestBg.current = v;
 			setBgImage(v);
 
-			FabricImage.fromURL(v).then((img) => {
-				if (lastestBg.current === v) {
-					dispatch({
-						type: 'updateBlock',
-						block: rootBlock,
-						payload: {
-							backgroundImage: img,
-						},
+			const size = {
+				width: viewport?.width,
+				height: viewport?.height,
+			};
+			block
+				? BlockBackground.patternFromURL(v, size).then((pattern) => {
+						if (lastestBg.current !== v) {
+							return;
+						}
+						block.fill = pattern;
+						dispatch({
+							type: 'updateBlock',
+							block,
+						});
+					})
+				: BlockBackground.fromURL(v, size).then((newBlock) => {
+						if (lastestBg.current !== v) {
+							return;
+						}
+						dispatch({
+							type: 'addBlock',
+							block: newBlock,
+						});
+						setBlock(newBlock);
 					});
-				}
-			});
 		},
-		[bgImage, setBgImage, rootBlock, dispatch],
+		[viewport, setBgImage, block, setBlock, dispatch],
 	);
 
 	const [bgImages, setBgImages] = useLocalStorageState<Array<UploadFileAttrs>>(

@@ -1,6 +1,7 @@
 import { FabricObjectProps } from 'fabric';
 
 export enum BlockTypes {
+	Viewport = 'viewport',
 	Background = 'background',
 	Image = 'image',
 	WaterMark = 'waterMark',

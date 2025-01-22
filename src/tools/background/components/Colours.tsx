@@ -1,4 +1,4 @@
-import { BlockCanvas } from '@/blocks/Canvas';
+import { BlockBackground } from '@/blocks/Background';
 import Sketch from '@uiw/react-color-sketch';
 import Wheel from '@uiw/react-color-wheel';
 import { useControllableValue, useLocalStorageState } from 'ahooks';
@@ -9,23 +9,41 @@ import React from 'react';
 function Colours({
 	ctx,
 	dispatch,
+	block,
+	setBlock,
 }: {
 	ctx: IPicexContext;
 	dispatch: IPicexDispatch;
+	block: null | BlockBackground;
+	setBlock: (block: BlockBackground) => void;
 }) {
-	const { blocks } = ctx;
-	const value = blocks[0]?.backgroundColor;
+	const viewport = ctx.blocks[0];
+	const value = block?.backgroundColor;
 
 	const [hex, setHex] = useControllableValue({
 		value: typeof value === 'string' && value ? value : 'transparent',
 		onChange: (v) => {
-			if (blocks[0] instanceof BlockCanvas) {
+			if (!viewport) {
+				return;
+			}
+			if (block) {
 				dispatch({
 					type: 'updateBlock',
-					block: blocks[0],
+					block,
 					payload: {
 						backgroundColor: v,
 					},
+				});
+			} else {
+				BlockBackground.fromColour(v, {
+					width: viewport?.width,
+					height: viewport?.height,
+				}).then((newBlock) => {
+					dispatch({
+						type: 'addBlock',
+						block: newBlock,
+					});
+					setBlock(newBlock);
 				});
 			}
 		},

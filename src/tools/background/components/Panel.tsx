@@ -4,6 +4,7 @@ import Colours from './Colours';
 import Images from './Images';
 import { Segmented } from 'antd';
 import { UploadBoxProps } from '@/components/common/UploadBox';
+import { BlockBackground } from '@/blocks/Background';
 
 enum Tabs {
 	Colour = 'Colour',
@@ -15,6 +16,7 @@ function Panel({
 	...props
 }: IPicexToolRenderParams & { config?: UploadBoxProps }) {
 	const [tab, setTab] = useState(Tabs.Colour);
+	const [block, setBlock] = useState<BlockBackground | null>(null);
 
 	let node;
 	switch (tab) {
@@ -23,6 +25,8 @@ function Panel({
 				<Colours
 					{...props}
 					{...config}
+					block={block}
+					setBlock={setBlock}
 				/>
 			);
 			break;
@@ -31,6 +35,8 @@ function Panel({
 				<Images
 					{...props}
 					{...config}
+					block={block}
+					setBlock={setBlock}
 				/>
 			);
 			break;

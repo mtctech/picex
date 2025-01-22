@@ -1,13 +1,7 @@
 import React from 'react';
-import { Block, BlockWaterMark } from '../blocks';
+import { Block, BlockViewport, BlockWaterMark } from '../blocks';
 import { PicexTool } from '@/tools';
-import {
-	ImageProps,
-	TextProps,
-	StaticCanvas,
-	ImageSource,
-	RectProps,
-} from 'fabric';
+import { Canvas } from 'fabric';
 
 declare global {
 	interface IPicexContext {
@@ -15,10 +9,10 @@ declare global {
 		blocks: Block[];
 		tools: PicexTool[];
 		currentBlock: Block | null;
-		fcanvas: StaticCanvas | null;
+		fcanvas: Canvas | null;
 		error?: null | Error;
 		elMenuWrapper: React.RefObject<null | HTMLElement>;
-		elCanvasWrapper: React.RefObject<null | HTMLElement>;
+		elCanvasWrapper: React.RefObject<null | HTMLDivElement>;
 		elBlockTreeWrapper: React.RefObject<null | HTMLElement>;
 		elPropertiesWrapper: React.RefObject<null | HTMLElement>;
 	}
@@ -30,20 +24,32 @@ declare global {
 			width: number;
 			height: number;
 		}>;
+		viewport: {
+			width: number;
+			height: number;
+		};
+	};
+	type PicexContentActionMount = {
+		type: 'mount';
+		fcanvas?: Canvas;
 	};
 	type PicexContentActionAddWatermark = {
 		type: 'addWatermark';
 		block: BlockWaterMark;
 	};
-	type PicexContentActionAddBlock = { type: 'addBlock'; block: Block };
+	type PicexContentActionAddBlock = {
+		type: 'addBlock';
+		block: Exclude<Block, BlockWaterMark | BlockViewport>;
+	};
 	type PicexContentActionUpdateBlock = {
 		type: 'updateBlock';
 		block: Block;
-		payload: Partial<Block>;
+		payload?: Partial<Block>;
 	};
 	type PicexContentActionRemoveBlock = { type: 'removeBlock'; block: Block };
 	type PicexContextAction =
 		| PicexContentActionInit
+		| PicexContentActionMount
 		| PicexContentActionAddWatermark
 		| PicexContentActionAddBlock
 		| PicexContentActionUpdateBlock

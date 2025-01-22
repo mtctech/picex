@@ -1,4 +1,4 @@
-import { Block, BlockCanvas } from '@/blocks';
+import { Block, BlockViewport } from '@/blocks';
 import { BlockWaterMark } from '@/blocks';
 import { usePicexCtx } from '@/core/context';
 import { useRequest } from 'ahooks';
@@ -12,7 +12,7 @@ export function useDownload(opts?: UseRequestOptions<boolean, [string]>) {
 	return useRequest(
 		async (type: ImageFormat, filename = `${Date.now()}`) => {
 			const [rootBlock, ...objects] = blocks;
-			if (!(rootBlock instanceof BlockCanvas)) {
+			if (!(rootBlock instanceof BlockViewport)) {
 				throw new Error('No valid image to download');
 			}
 			const validBlocks = objects.filter(
@@ -28,7 +28,7 @@ export function useDownload(opts?: UseRequestOptions<boolean, [string]>) {
 			} else {
 				const canvas = await rootBlock.cloneWithoutData();
 				canvas.backgroundColor = 'transparent';
-				canvas.add(...(validBlocks as Exclude<Block, BlockCanvas>[]));
+				canvas.add(...(validBlocks as Exclude<Block, BlockViewport>[]));
 				canvas.renderAll();
 				dataURL = canvas.toDataURL(opts);
 			}
