@@ -2,20 +2,28 @@ import { Button, Tooltip } from 'antd';
 import { UploadBox, UploadBoxProps, UploadChangeInfo } from './UploadBox';
 import { Block } from '@/index';
 import { useDownload } from '@/hooks/useDownload';
+import { cn } from '@/utils/cn';
 
 export function Operators({
 	blocks,
 	uploadProps,
 	onChange,
+	className,
 }: {
 	blocks: Block[];
 	uploadProps: UploadBoxProps | undefined;
 	onChange: (info: UploadChangeInfo) => void;
+	className?: string;
 }) {
 	const { run: download, loading: downloading } = useDownload();
 
 	return (
-		<aside className="absolute top-8 right-8 flex items-center justify-end gap-2">
+		<aside
+			className={cn(
+				'absolute top-8 right-8 flex items-center justify-end gap-2',
+				className,
+			)}
+		>
 			{blocks.length ? (
 				<UploadBox
 					accept="image/*"

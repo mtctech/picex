@@ -65,11 +65,12 @@ export function PicexDesign({
 	return (
 		<div className="picex-design h-full">
 			<Operators
+				className="z-10"
 				blocks={blocks}
 				uploadProps={uploadProps}
 				onChange={onChange}
 			/>
-			<aside className="absolute top-8 left-1/2 -translate-x-1/2 flex items-center justify-start gap-2">
+			<aside className="absolute z-10 top-8 left-1/2 -translate-x-1/2 flex items-center justify-start gap-2">
 				<div className="flex items-center gap-4">
 					<Button
 						color="default"

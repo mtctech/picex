@@ -6,32 +6,34 @@ import type { Options as UseRequestOptions } from 'ahooks/lib/useRequest/src/typ
 import download from 'downloadjs';
 import { ImageFormat } from 'fabric';
 
-export function useDownload(opts?: UseRequestOptions<boolean, [string]>) {
-	const { blocks } = usePicexCtx();
+export function useDownload(
+	opts?: UseRequestOptions<boolean, [ImageFormat, string]>,
+) {
+	const { fcanvas, blocks } = usePicexCtx();
 
 	return useRequest(
 		async (type: ImageFormat, filename = `${Date.now()}`) => {
-			const [rootBlock, ...objects] = blocks;
-			if (!(rootBlock instanceof BlockViewport)) {
+			if (!fcanvas || !blocks.length) {
 				throw new Error('No valid image to download');
 			}
-			const validBlocks = objects.filter(
-				(block) => !(block instanceof BlockWaterMark),
+			const [root, ...others] = blocks;
+			const viewport = await (root as BlockViewport).cloneWithoutFill();
+			const objects = await Promise.all(
+				others
+					.filter((block) => !(block instanceof BlockWaterMark))
+					.map((x) => x.clone()),
 			);
 			let dataURL: string;
 			const opts = {
 				format: type,
 				multiplier: 1,
 			};
-			if (validBlocks.length === objects.length) {
-				dataURL = rootBlock.toDataURL(opts);
-			} else {
-				const canvas = await rootBlock.cloneWithoutData();
-				canvas.backgroundColor = 'transparent';
-				canvas.add(...(validBlocks as Exclude<Block, BlockViewport>[]));
-				canvas.renderAll();
-				dataURL = canvas.toDataURL(opts);
-			}
+
+			const canvas = await fcanvas.cloneWithoutData();
+			canvas.clipPath = viewport;
+			canvas.add(...(objects as Exclude<Block, BlockViewport>[]));
+			canvas.renderAll();
+			dataURL = canvas.toDataURL(opts);
 
 			return download(dataURL) as boolean;
 		},

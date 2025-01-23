@@ -1,4 +1,4 @@
-import { Pattern, Rect } from 'fabric';
+import { Pattern, Rect, TFiller } from 'fabric';
 import { BlockTypes, IBlock } from './types';
 import { getTransparentUnitCanvas } from '@/utils/image';
 
@@ -15,7 +15,7 @@ export class BlockViewport extends Rect implements IBlock {
 
 	hasControls = false;
 
-	fill = (() => {
+	fill: TFiller | string | null = (() => {
 		const canvas = getTransparentUnitCanvas();
 
 		return new Pattern({
@@ -23,4 +23,11 @@ export class BlockViewport extends Rect implements IBlock {
 			repeat: 'repeat',
 		});
 	})();
+
+	async cloneWithoutFill() {
+		const cloned = await this.clone();
+		cloned.fill = null;
+
+		return cloned;
+	}
 }
