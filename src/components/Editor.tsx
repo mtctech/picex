@@ -12,19 +12,21 @@ import {
 } from '@/core/context';
 import { reducer } from '@/core/reducer';
 import { WaterMark } from '@/blocks/WaterMark';
-import { IBlock } from '@/blocks/types';
 
 export function PicexEditor({
 	tools = [new PicexToolBackground()],
 	multiple = false,
+	images,
 	watermark,
+	viewport,
 	children,
 	left,
 	right,
 }: PropsWithChildren<{
 	tools?: PicexTool[];
 	multiple?: boolean;
-	viewport?: Pick<IBlock, 'width' | 'height'>;
+	viewport?: PicexContentActionInit['viewport'];
+	images?: PicexContentActionInit['images'];
 	watermark?: WaterMark;
 	left?: PropsWithChildren<{}>;
 	right?: PropsWithChildren<{}>;
@@ -50,7 +52,9 @@ export function PicexEditor({
 					}
 				>
 					<PicexDesign
+						images={images}
 						watermark={watermark}
+						viewport={viewport}
 						uploadProps={{ multiple }}
 					>
 						{children}

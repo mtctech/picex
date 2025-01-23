@@ -31,7 +31,7 @@ declare global {
 	};
 	type PicexContentActionMount = {
 		type: 'mount';
-		fcanvas?: Canvas;
+		fcanvas: Canvas;
 	};
 	type PicexContentActionAddWatermark = {
 		type: 'addWatermark';

@@ -1,7 +1,7 @@
 import { Button } from 'antd';
 import Redo from '@/images/redo.svg?react';
 import Undo from '@/images/undo.svg?react';
-import React, { PropsWithChildren, useCallback, useRef } from 'react';
+import React, { PropsWithChildren, useCallback, useEffect } from 'react';
 import { WaterMark } from '@/blocks/WaterMark';
 import { useWaterMark } from '@/hooks/useWaterMark';
 import { usePicexCtx, usePicexDispatch } from '@/core/context';
@@ -13,8 +13,6 @@ import {
 	UploadBoxProps,
 	UploadChangeInfo,
 } from './common/UploadBox';
-import { useSize } from 'ahooks';
-import { IBlock } from '@/blocks/types';
 /**
  * 主区域画布
  * @description
@@ -26,10 +24,12 @@ export function PicexDesign({
 		width: 820,
 		height: 590,
 	},
+	images,
 	watermark,
 	uploadProps,
 }: PropsWithChildren<{
-	viewport?: Pick<IBlock, 'width' | 'height'>;
+	viewport?: PicexContentActionInit['viewport'];
+	images?: PicexContentActionInit['images'];
 	watermark?: WaterMark;
 	uploadProps?: UploadBoxProps;
 }>) {
@@ -60,6 +60,15 @@ export function PicexDesign({
 		[dispatch],
 	);
 
+	useEffect(() => {
+		if (images?.length && viewport) {
+			dispatch({
+				type: 'init',
+				images,
+				viewport,
+			});
+		}
+	}, [images, viewport]);
 	useWaterMark(watermark);
 
 	return (
