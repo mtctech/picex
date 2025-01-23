@@ -13,6 +13,12 @@ import {
 	UploadBoxProps,
 	UploadChangeInfo,
 } from './common/UploadBox';
+
+const defaultViewport = {
+	width: 820,
+	height: 590,
+};
+
 /**
  * 主区域画布
  * @description
@@ -20,10 +26,7 @@ import {
  * 2. 根据Blocks树渲染画布内容
  */
 export function PicexDesign({
-	viewport = {
-		width: 820,
-		height: 590,
-	},
+	viewport = defaultViewport,
 	images,
 	watermark,
 	uploadProps,
@@ -68,7 +71,7 @@ export function PicexDesign({
 				viewport,
 			});
 		}
-	}, [images, viewport]);
+	}, [images, viewport.width, viewport.height]);
 	useWaterMark(watermark);
 
 	return (
