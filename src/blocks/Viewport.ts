@@ -11,6 +11,8 @@ export class BlockViewport extends Rect implements IBlock {
 
 	selectable = false;
 
+	evented = false;
+
 	hasControls = false;
 
 	fill = (() => {

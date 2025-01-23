@@ -1,6 +1,13 @@
-import { FabricImage, FabricObjectProps, Pattern, Rect } from 'fabric';
+import {
+	FabricImage,
+	FabricObjectProps,
+	Pattern,
+	Rect,
+	RectProps,
+} from 'fabric';
 import { BlockTypes, IBlock } from './types';
 import { DEBUG } from '@/utils/consts';
+import { mixinHoverBorder } from './mixins/hover';
 
 /**
  * 画布根块
@@ -49,9 +56,11 @@ export class BlockBackground extends Rect implements IBlock {
 
 	blockType = BlockTypes.Background;
 
-	selectable = true;
+	hoverCursor = 'move';
 
-	hasControls = true;
+	constructor(props: Partial<RectProps>) {
+		super(props);
 
-	stroke = DEBUG ? 'green' : null;
+		mixinHoverBorder(this);
+	}
 }

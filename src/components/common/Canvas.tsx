@@ -17,6 +17,11 @@ export function PicexCanvas({ children }: PropsWithChildren) {
 			width: window.screen.width,
 			height: window.screen.height,
 			backgroundColor: 'transparent',
+			hoverCursor: 'default',
+			// clip时忽略controls部分
+			controlsAboveOverlay: true,
+			// control时保持对象层级
+			preserveObjectStacking: true,
 		});
 
 		refCanvas.current = fcanvas;
@@ -40,9 +45,10 @@ export function PicexCanvas({ children }: PropsWithChildren) {
 		blocks.forEach((block) => {
 			if (fcanvas.contains(block)) {
 				fcanvas.remove(block);
+			} else {
+				fcanvas.centerObject(block);
 			}
 			fcanvas.add(block);
-			fcanvas.centerObject(block);
 		});
 		fcanvas.clipPath = blocks[0];
 		fcanvas.renderAll();

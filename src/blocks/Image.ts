@@ -1,6 +1,7 @@
-import { FabricImage } from 'fabric';
+import { FabricImage, ImageProps, ImageSource } from 'fabric';
 import { BlockTypes, IBlock } from './types';
 import { DEBUG } from '@/utils/consts';
+import { mixinHoverBorder } from './mixins/hover';
 
 /**
  * 图片块
@@ -9,9 +10,11 @@ import { DEBUG } from '@/utils/consts';
 export class BlockImage extends FabricImage implements IBlock {
 	blockType = BlockTypes.Image;
 
-	selectable = true;
+	hoverCursor = 'move';
 
-	hasControls = true;
+	constructor(s: ImageSource | string, props: Partial<ImageProps>) {
+		super(s as string, props);
 
-	stroke = DEBUG ? 'green' : null;
+		mixinHoverBorder(this);
+	}
 }

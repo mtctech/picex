@@ -28,9 +28,9 @@ export class BlockWaterMark extends Rect implements IBlock {
 
 	selectable = false;
 
-	hasControls = false;
+	evented = false;
 
-	hoverCursor = null;
+	hasControls = false;
 
 	static async fromURL(
 		{ value, props }: WaterMark,
