@@ -3,18 +3,27 @@ import { UploadBox, UploadBoxProps, UploadChangeInfo } from './UploadBox';
 import { Block } from '@/index';
 import { useDownload } from '@/hooks/useDownload';
 import { cn } from '@/utils/cn';
+import { ImageFormat } from 'fabric';
+
+export type DownloadProps = {
+	format?: ImageFormat;
+	filename?: string;
+};
 
 export function Operators({
 	blocks,
 	uploadProps,
+	downloadProps,
 	onChange,
 	className,
 }: {
 	blocks: Block[];
-	uploadProps: UploadBoxProps | undefined;
+	uploadProps?: UploadBoxProps;
+	downloadProps?: DownloadProps;
 	onChange: (info: UploadChangeInfo) => void;
 	className?: string;
 }) {
+	const { format = 'png', filename } = downloadProps || {};
 	const { run: download, loading: downloading } = useDownload();
 
 	return (
@@ -60,7 +69,7 @@ export function Operators({
 				shape="round"
 				disabled={!blocks.length}
 				loading={downloading}
-				onClick={() => download('image/png')}
+				onClick={() => download(format, filename)}
 			>
 				Download
 			</Button>

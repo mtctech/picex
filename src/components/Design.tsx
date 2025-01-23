@@ -7,7 +7,7 @@ import { useWaterMark } from '@/hooks/useWaterMark';
 import { usePicexCtx, usePicexDispatch } from '@/core/context';
 import { cn } from '@/utils/cn';
 import { PicexCanvas } from './common/Canvas';
-import { Operators } from './common/Operators';
+import { DownloadProps, Operators } from './common/Operators';
 import {
 	UploadBox,
 	UploadBoxProps,
@@ -35,6 +35,7 @@ export function PicexDesign({
 	images?: PicexContentActionInit['images'];
 	watermark?: WaterMark;
 	uploadProps?: UploadBoxProps;
+	downloadProps?: DownloadProps;
 }>) {
 	const { blocks } = usePicexCtx();
 	const dispatch = usePicexDispatch();

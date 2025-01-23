@@ -12,6 +12,7 @@ import {
 } from '@/core/context';
 import { reducer } from '@/core/reducer';
 import { WaterMark } from '@/blocks/WaterMark';
+import { DownloadProps } from './common/Operators';
 
 export function PicexEditor({
 	tools = [new PicexToolBackground()],
@@ -22,6 +23,7 @@ export function PicexEditor({
 	children,
 	left,
 	right,
+	downloadProps,
 }: PropsWithChildren<{
 	tools?: PicexTool[];
 	multiple?: boolean;
@@ -30,6 +32,7 @@ export function PicexEditor({
 	watermark?: WaterMark;
 	left?: PropsWithChildren<{}>;
 	right?: PropsWithChildren<{}>;
+	downloadProps?: DownloadProps;
 }>) {
 	const [state, dispatch] = useReducer(reducer, DefaultPicexContext);
 
@@ -56,6 +59,7 @@ export function PicexEditor({
 						watermark={watermark}
 						viewport={viewport}
 						uploadProps={{ multiple }}
+						downloadProps={downloadProps}
 					>
 						{children}
 					</PicexDesign>

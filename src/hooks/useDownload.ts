@@ -7,7 +7,7 @@ import download from 'downloadjs';
 import { ImageFormat } from 'fabric';
 
 export function useDownload(
-	opts?: UseRequestOptions<boolean, [ImageFormat, string]>,
+	opts?: UseRequestOptions<boolean, [ImageFormat, string | undefined]>,
 ) {
 	const { fcanvas, blocks } = usePicexCtx();
 
@@ -35,7 +35,7 @@ export function useDownload(
 			canvas.renderAll();
 			dataURL = canvas.toDataURL(opts);
 
-			return download(dataURL) as boolean;
+			return download(dataURL, filename) as boolean;
 		},
 		{
 			...opts,
