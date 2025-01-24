@@ -31,7 +31,7 @@ function Colours({
 					type: 'updateBlock',
 					block,
 					payload: {
-						backgroundColor: v,
+						fill: v,
 					},
 				});
 			} else {

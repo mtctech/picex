@@ -1,5 +1,5 @@
 import React from 'react';
-import { Block, BlockViewport, BlockWaterMark } from '../blocks';
+import { Block, Block4Content, BlockWaterMark } from '../blocks';
 import { PicexTool } from '@/tools';
 import { Canvas } from 'fabric';
 
@@ -39,12 +39,12 @@ declare global {
 	};
 	type PicexContentActionAddBlock = {
 		type: 'addBlock';
-		block: Exclude<Block, BlockWaterMark | BlockViewport>;
+		block: Block4Content;
 	};
 	type PicexContentActionUpdateBlock = {
 		type: 'updateBlock';
 		block: Block;
-		payload?: Partial<Block>;
+		payload?: Record<string, any>;
 	};
 	type PicexContentActionRemoveBlock = { type: 'removeBlock'; block: Block };
 	type PicexContextAction =

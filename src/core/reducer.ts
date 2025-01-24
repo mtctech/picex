@@ -1,11 +1,7 @@
 import { BlockViewport, BlockImage, BlockWaterMark } from '@/blocks';
 import { scaleToFitSize } from '@/utils/scale';
 
-const histories = [];
-
 export const reducer = (state: IPicexContext, action: PicexContextAction) => {
-	histories.push(action);
-
 	switch (action.type) {
 		case 'init':
 			return init(state, action);
@@ -97,10 +93,12 @@ const updateBlock = (
 ) => {
 	const { blocks } = state;
 	const { block, payload } = action;
-	block.set(payload);
+	if (payload) {
+		block.set(payload);
+	}
 
 	return {
 		...state,
-		blocks,
+		blocks: [...blocks],
 	};
 };

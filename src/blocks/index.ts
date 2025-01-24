@@ -17,4 +17,7 @@ export type Block =
 	| BlockBackground
 	| BlockImage
 	| BlockWaterMark;
+
+export type Block4Content = BlockBackground | BlockImage;
+
 export { BlockViewport, BlockBackground, BlockImage, BlockWaterMark };
