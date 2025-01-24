@@ -33,7 +33,7 @@ export function Operators({
 				className,
 			)}
 		>
-			{blocks.length ? (
+			{blocks.length && !uploadProps?.hidden ? (
 				<UploadBox
 					accept="image/*"
 					multiple={false}
