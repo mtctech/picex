@@ -7,9 +7,13 @@ import {
 	Pattern,
 	StaticCanvas,
 	RectProps,
+	SerializedRectProps,
+	ObjectEvents,
+	TOptions,
+	TClassProperties,
 } from 'fabric';
 import type { Required } from 'utility-types';
-import { BlockTypes, IBlock } from './types';
+import { BlockTypes, IBlock, IBlockPropKeys } from './types';
 
 const defaultOffsetX = 20;
 const defaultOffsetY = 40;
@@ -19,11 +23,30 @@ export interface WaterMark {
 	props?: ImageProps | TextProps;
 }
 
+export interface SerializedBlockWaterMarkProps
+	extends SerializedRectProps,
+		IBlock {
+	canvas: StaticCanvas;
+}
+
+export interface BlockWaterMarkProps extends RectProps, IBlock {}
+
 /**
  * 水印块
  * @description 实现水印等接口
  */
-export class BlockWaterMark extends Rect implements IBlock {
+export class BlockWaterMark<
+		Props extends Required<
+			TOptions<BlockWaterMarkProps>,
+			'width' | 'height'
+		> = Required<BlockWaterMarkProps, 'width' | 'height'>,
+		SProps extends
+			SerializedBlockWaterMarkProps = SerializedBlockWaterMarkProps,
+		EventSpec extends ObjectEvents = ObjectEvents,
+	>
+	extends Rect<Props, SProps, EventSpec>
+	implements IBlock
+{
 	blockType = BlockTypes.WaterMark;
 
 	selectable = false;
@@ -82,32 +105,38 @@ export class BlockWaterMark extends Rect implements IBlock {
 		const patternSourceCanvas = new StaticCanvas(undefined, size);
 		patternSourceCanvas.add(object, cloned);
 
-		return new BlockWaterMark(patternSourceCanvas, {
+		return new BlockWaterMark({
+			canvas: patternSourceCanvas,
 			top: -rectOpts.height,
 			...rectOpts,
 		});
 	}
 
-	constructor(
-		canvas: StaticCanvas,
-		{
-			width,
-			height,
-			...options
-		}: Required<Partial<RectProps>, 'width' | 'height'>,
-	) {
-		const pattern = new Pattern({
-			source: canvas.getElement(),
-			repeat: 'repeat',
-		});
+	constructor(props: Props) {
+		const { canvas, fill, width, height } = props;
+		const pattern =
+			fill instanceof Pattern
+				? fill
+				: new Pattern({
+						source: canvas.getElement(),
+						repeat: 'repeat',
+					});
 
 		super({
 			angle: 15,
+			top: -height,
+			...props,
+			fill: pattern,
 			width: width * 2,
 			height: height * 2,
-			top: -height,
-			...options,
-			fill: pattern,
 		});
+	}
+
+	toObject<
+		T extends Omit<Props & TClassProperties<this>, keyof SProps>,
+		K extends keyof T = never,
+	>(propertiesToInclude: K[] = []): Pick<T, K> & SProps {
+		// @ts-ignore
+		return super.toObject([...propertiesToInclude, ...IBlockPropKeys]);
 	}
 }

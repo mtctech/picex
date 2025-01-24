@@ -1,24 +1,29 @@
 import { BlockViewport, BlockImage, BlockWaterMark } from '@/blocks';
 import { scaleToFitSize } from '@/utils/scale';
+import { wrapHistory } from './history';
 
-export const reducer = (state: IPicexContext, action: PicexContextAction) => {
-	switch (action.type) {
-		case 'init':
-			return init(state, action);
-		case 'mount':
-			return mount(state, action);
-		case 'addWatermark':
-			return addWatermark(state, action);
-		case 'addBlock':
-			return addBlock(state, action);
-		case 'updateBlock':
-			return updateBlock(state, action);
-		case 'removeBlock':
-			return state;
-		default:
-			return state;
-	}
-};
+export const reducer = wrapHistory(
+	(state: IPicexContext, action: PicexContextAction) => {
+		switch (action.type) {
+			case 'init':
+				return init(state, action);
+			case 'cover':
+				return cover(state, action);
+			case 'mount':
+				return mount(state, action);
+			case 'addWatermark':
+				return addWatermark(state, action);
+			case 'addBlock':
+				return addBlock(state, action);
+			case 'updateBlock':
+				return updateBlock(state, action);
+			case 'removeBlock':
+				return state;
+			default:
+				return state;
+		}
+	},
+);
 
 const init = (state: IPicexContext, action: PicexContentActionInit) => {
 	const { images, viewport: size } = action;
@@ -46,6 +51,15 @@ const init = (state: IPicexContext, action: PicexContentActionInit) => {
 	return {
 		...state,
 		blocks: nextBlocks,
+	};
+};
+
+const cover = (state: IPicexContext, action: PicexContentActionCover) => {
+	const { blocks } = action;
+
+	return {
+		...state,
+		blocks,
 	};
 };
 

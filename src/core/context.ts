@@ -29,6 +29,10 @@ declare global {
 			height: number;
 		};
 	};
+	type PicexContentActionCover = {
+		type: 'cover';
+		blocks: Block[];
+	};
 	type PicexContentActionMount = {
 		type: 'mount';
 		fcanvas: Canvas;
@@ -49,6 +53,7 @@ declare global {
 	type PicexContentActionRemoveBlock = { type: 'removeBlock'; block: Block };
 	type PicexContextAction =
 		| PicexContentActionInit
+		| PicexContentActionCover
 		| PicexContentActionMount
 		| PicexContentActionAddWatermark
 		| PicexContentActionAddBlock

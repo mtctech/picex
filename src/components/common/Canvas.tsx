@@ -1,6 +1,9 @@
 import React, { PropsWithChildren, useEffect, useRef } from 'react';
 import { usePicexCtx, usePicexDispatch } from '@/core/context';
 import { Canvas } from 'fabric';
+import { Block, BlockTypes } from '@/blocks';
+import { isContentBlock } from '@/blocks/utils';
+// import 'fabric-history/src/index';
 
 export function PicexCanvas({ children }: PropsWithChildren) {
 	const ctx = usePicexCtx();
@@ -37,21 +40,46 @@ export function PicexCanvas({ children }: PropsWithChildren) {
 			return;
 		}
 		const fcanvas = ctx.fcanvas || refCanvas.current;
-		const { blocks } = ctx;
-		if (!fcanvas || !blocks.length) {
+		const { blocks: nextBlocks } = ctx;
+		if (!fcanvas || !nextBlocks.length) {
 			return;
 		}
+		const currBlocks = [...(fcanvas._objects as Block[])];
+		const isInit = !currBlocks.length || !currBlocks.includes(nextBlocks[0]!);
+		const isAddOrRemove =
+			!isInit &&
+			(nextBlocks.some(
+				(block) => !fcanvas.contains(block) && isContentBlock(block),
+			) ||
+				currBlocks.some(
+					(block) => !nextBlocks.includes(block) && isContentBlock(block),
+				));
+		const getHistroyAction = (prev: Block[], next: Block[]) => async () => {
+			dispatch({
+				type: 'cover',
+				blocks: prev,
+			});
+			return getHistroyAction(next, prev);
+		};
 
-		blocks.forEach((block) => {
-			if (fcanvas.contains(block)) {
-				fcanvas.remove(block);
-			} else {
-				fcanvas.centerObject(block);
-			}
+		fcanvas.history?.disable();
+		fcanvas.clear();
+		nextBlocks.forEach((block) => {
 			fcanvas.add(block);
+			fcanvas.centerObject(block);
 		});
-		fcanvas.clipPath = blocks[0];
+		fcanvas.clipPath = nextBlocks[0];
 		fcanvas.renderAll();
+		fcanvas.history?.enable();
+
+		if (isInit) {
+			fcanvas.history?.clear();
+		}
+		if (isAddOrRemove) {
+			Promise.all(currBlocks.map((x) => x.clone())).then((prevBlocks) => {
+				fcanvas.history?.append(getHistroyAction(prevBlocks, nextBlocks));
+			});
+		}
 	}, [ctx]);
 
 	return (

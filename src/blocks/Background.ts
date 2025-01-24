@@ -1,19 +1,39 @@
 import {
+	classRegistry,
 	FabricImage,
 	FabricObjectProps,
+	ObjectEvents,
 	Pattern,
 	Rect,
 	RectProps,
+	SerializedRectProps,
+	TClassProperties,
+	TOptions,
 } from 'fabric';
-import { BlockTypes, IBlock } from './types';
+import { BlockTypes, IBlock, IBlockPropKeys } from './types';
 import { DEBUG } from '@/utils/consts';
 import { mixinHoverBorder } from './mixins/hover';
+
+export interface SerializedBlockBackgroundProps
+	extends SerializedRectProps,
+		IBlock {}
+
+export interface BlockBackgroundProps extends RectProps, IBlock {}
 
 /**
  * 画布根块
  * @description 实现背景替换等接口
  */
-export class BlockBackground extends Rect implements IBlock {
+export class BlockBackground<
+		Props extends
+			TOptions<BlockBackgroundProps> = Partial<BlockBackgroundProps>,
+		SProps extends
+			SerializedBlockBackgroundProps = SerializedBlockBackgroundProps,
+		EventSpec extends ObjectEvents = ObjectEvents,
+	>
+	extends Rect<Props, SProps, EventSpec>
+	implements IBlock
+{
 	static async patternFromURL(
 		url: string,
 		size: Pick<FabricObjectProps, 'width' | 'height'>,
@@ -54,13 +74,26 @@ export class BlockBackground extends Rect implements IBlock {
 		});
 	}
 
-	blockType = BlockTypes.Background;
+	declare blockType: BlockTypes;
 
-	hoverCursor = 'move';
-
-	constructor(props: Partial<RectProps>) {
+	constructor(props?: Props) {
 		super(props);
+		this.blockType = BlockTypes.Background;
+		this.hoverCursor = 'move';
 
 		mixinHoverBorder(this);
 	}
+
+	toObject<
+		T extends Omit<Props & TClassProperties<this>, keyof SProps>,
+		K extends keyof T = never,
+	>(propertiesToInclude: K[] = []): Pick<T, K> & SProps {
+		// @ts-ignore
+		return super.toObject([...propertiesToInclude, ...IBlockPropKeys]);
+	}
 }
+
+// to make possible restoring from serialization
+classRegistry.setClass(BlockBackground, Rect.type);
+// to make block connected to svg Path element
+classRegistry.setSVGClass(BlockBackground, Rect.type);
