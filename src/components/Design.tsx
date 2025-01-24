@@ -1,6 +1,3 @@
-import { Button } from 'antd';
-import Redo from '@/images/redo.svg?react';
-import Undo from '@/images/undo.svg?react';
 import React, { PropsWithChildren, useCallback, useEffect } from 'react';
 import { WaterMark } from '@/blocks/WaterMark';
 import { useWaterMark } from '@/hooks/useWaterMark';
@@ -13,6 +10,7 @@ import {
 	UploadBoxProps,
 	UploadChangeInfo,
 } from './common/UploadBox';
+import { HistoryBtns } from './common/HistoryBtns';
 
 const defaultViewport = {
 	width: 820,
@@ -30,6 +28,7 @@ export function PicexDesign({
 	images,
 	watermark,
 	uploadProps,
+	children,
 }: PropsWithChildren<{
 	viewport?: PicexContentActionInit['viewport'];
 	images?: PicexContentActionInit['images'];
@@ -83,24 +82,7 @@ export function PicexDesign({
 				uploadProps={uploadProps}
 				onChange={onChange}
 			/>
-			<aside className="absolute z-10 top-8 left-1/2 -translate-x-1/2 flex items-center justify-start gap-2">
-				<div className="flex items-center gap-4">
-					<Button
-						color="default"
-						variant="filled"
-						className="w-[3.125rem] h-[3.125rem] p-0 flex items-center justify-center"
-					>
-						<Undo />
-					</Button>
-					<Button
-						color="default"
-						variant="filled"
-						className="w-[3.125rem] h-[3.125rem] p-0 flex items-center justify-center"
-					>
-						<Redo />
-					</Button>
-				</div>
-			</aside>
+			<HistoryBtns />
 			<div
 				// ref={el}
 				className="picex-design-content h-full flex items-center justify-center"
@@ -109,12 +91,14 @@ export function PicexDesign({
 					<div
 						className={cn('w-full text-center max-w-[422px] aspect-[422/553]')}
 					>
-						<UploadBox
-							accept="image/*"
-							multiple={false}
-							{...uploadProps}
-							onChange={onChange}
-						/>
+						{children ?? (
+							<UploadBox
+								accept="image/*"
+								multiple={false}
+								{...uploadProps}
+								onChange={onChange}
+							/>
+						)}
 					</div>
 				) : (
 					<PicexCanvas />
