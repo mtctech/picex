@@ -31,6 +31,7 @@ const init = (state: IPicexContext, action: PicexContentActionInit) => {
 		viewport,
 		...images.map(({ url, width, height }) => {
 			const img = new Image();
+			img.crossOrigin = 'anonymous';
 			img.src = url;
 
 			const block = new BlockImage(img, {
