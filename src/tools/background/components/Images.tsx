@@ -39,15 +39,17 @@ function Images({
 				width: viewport?.width,
 				height: viewport?.height,
 			};
-			block
+			block && ctx.blocks.includes(block)
 				? BlockBackground.patternFromURL(v, size).then((pattern) => {
 						if (lastestBg.current !== v) {
 							return;
 						}
-						block.fill = pattern;
 						dispatch({
 							type: 'updateBlock',
 							block,
+							payload: {
+								fill: pattern,
+							},
 						});
 					})
 				: BlockBackground.fromURL(v, size).then((newBlock) => {
@@ -119,7 +121,7 @@ function Images({
 								background: `url(${file.url}) no-repeat center center / cover`,
 							}}
 							onClick={() => {
-								setBgImage(file.url);
+								setBgImage4Root(file.url);
 							}}
 						></li>
 					),

@@ -7,6 +7,7 @@ import {
 	Rect,
 	RectProps,
 	SerializedRectProps,
+	StaticCanvas,
 	TClassProperties,
 	TOptions,
 } from 'fabric';
@@ -40,13 +41,19 @@ export class BlockBackground<
 		size: Pick<FabricObjectProps, 'width' | 'height'>,
 	) {
 		const img = await FabricImage.fromURL(url);
-		if (size.width > size.height) {
+		if (img.width > img.height) {
 			img.scaleToWidth(size.width);
 		} else {
 			img.scaleToHeight(size.height);
 		}
+		const canvas = new StaticCanvas(undefined, {
+			width: img.getScaledWidth(),
+			height: img.getScaledHeight(),
+		});
+		canvas.add(img);
+		canvas.renderAll();
 		return new Pattern({
-			source: img.getElement(),
+			source: canvas.toCanvasElement(),
 			repeat: 'no-repeat',
 		});
 	}
@@ -66,7 +73,9 @@ export class BlockBackground<
 		size: Pick<FabricObjectProps, 'width' | 'height'>,
 	) {
 		const pattern = await BlockBackground.patternFromURL(url, size);
-		const { width, height } = pattern.source as HTMLImageElement;
+		const { width, height } = pattern.source as
+			| HTMLImageElement
+			| HTMLCanvasElement;
 
 		return new BlockBackground({
 			width,
