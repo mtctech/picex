@@ -8,6 +8,7 @@ import {
 	TClassProperties,
 	classRegistry,
 } from 'fabric';
+import { v4 as uuid } from 'uuid';
 import { BlockTypes, IBlock, IBlockPropKeys } from './types';
 import { DEBUG } from '@/utils/consts';
 import { mixinHoverBorder } from './mixins/hover';
@@ -39,6 +40,7 @@ export class BlockImage<
 		// @ts-ignore
 		super(s, props);
 
+		this.id = props?.id || uuid();
 		this.blockType = BlockTypes.Image;
 		this.hoverCursor = 'move';
 

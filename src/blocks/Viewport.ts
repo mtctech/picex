@@ -9,6 +9,7 @@ import {
 	TFiller,
 	TOptions,
 } from 'fabric';
+import { v4 as uuid } from 'uuid';
 import { BlockTypes, IBlock, IBlockPropKeys } from './types';
 import { getTransparentUnitCanvas } from '@/utils/image';
 
@@ -34,6 +35,8 @@ export class BlockViewport<
 
 	constructor(props?: Props) {
 		super(props);
+
+		this.id = props?.id || uuid();
 		this.blockType = BlockTypes.Viewport;
 		this.selectable = false;
 		this.evented = false;

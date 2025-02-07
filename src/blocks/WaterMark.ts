@@ -12,6 +12,7 @@ import {
 	TOptions,
 	TClassProperties,
 } from 'fabric';
+import { v4 as uuid } from 'uuid';
 import type { Required } from 'utility-types';
 import { BlockTypes, IBlock, IBlockPropKeys } from './types';
 
@@ -130,6 +131,8 @@ export class BlockWaterMark<
 			width: width * 2,
 			height: height * 2,
 		});
+
+		this.id = props?.id || uuid();
 	}
 
 	toObject<

@@ -54,6 +54,10 @@ class FabricHistory {
 		});
 	}
 
+	isProcessing() {
+		return this._historyProcessing;
+	}
+
 	disable() {
 		this._historyProcessing = true;
 	}
@@ -136,7 +140,7 @@ class FabricHistory {
 		}: {
 			target: fabric.FabricObject;
 			transform?: {
-				original?: SerializedObjectProps;
+				original?: fabric.Transform['original'];
 			};
 		},
 		type: HistoryTypes,
@@ -166,7 +170,9 @@ class FabricHistory {
 				this.canvas.add(object);
 				break;
 			case HistoryTypes.MODIFIED:
-				const target = this.canvas._objects.find((x) => x === object);
+				const target = this.canvas._objects.find(
+					(x) => x === object || x.id === object.id,
+				);
 				if (target) {
 					target.set(data);
 				}

@@ -1,4 +1,16 @@
 import { FabricObjectProps } from 'fabric';
+import { FabricObject } from 'fabric';
+
+declare module 'fabric' {
+	interface FabricObject {
+		id?: string;
+	}
+	interface SerializedObjectProps {
+		id?: string;
+	}
+}
+
+FabricObject.customProperties = ['id'];
 
 export enum BlockTypes {
 	Viewport = 'viewport',

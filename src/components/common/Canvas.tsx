@@ -45,11 +45,13 @@ export function PicexCanvas({ children }: PropsWithChildren) {
 			return;
 		}
 		const currBlocks = [...(fcanvas._objects as Block[])];
-		const isInit = !currBlocks.length || !currBlocks.includes(nextBlocks[0]!);
+		const isInit =
+			!currBlocks.length || currBlocks[0]?.id !== nextBlocks[0]?.id;
 		const isAddOrRemove =
 			!isInit &&
+			!fcanvas.history?.isProcessing() &&
 			(nextBlocks.some(
-				(block) => !fcanvas.contains(block) && isContentBlock(block),
+				(block) => !currBlocks.includes(block) && isContentBlock(block),
 			) ||
 				currBlocks.some(
 					(block) => !nextBlocks.includes(block) && isContentBlock(block),
@@ -66,7 +68,10 @@ export function PicexCanvas({ children }: PropsWithChildren) {
 		fcanvas.clear();
 		nextBlocks.forEach((block) => {
 			fcanvas.add(block);
-			fcanvas.centerObject(block);
+			// should check if same id because of block clone cache by history
+			if (!currBlocks.some((item) => item === block || item.id === block.id)) {
+				fcanvas.centerObject(block);
+			}
 		});
 		fcanvas.clipPath = nextBlocks[0];
 		fcanvas.renderAll();
