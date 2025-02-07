@@ -35,6 +35,7 @@ function Panel({
 				<Images
 					{...props}
 					{...config}
+					children={null}
 					block={block}
 					setBlock={setBlock}
 				/>

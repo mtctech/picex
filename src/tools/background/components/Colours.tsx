@@ -2,16 +2,20 @@ import { BlockBackground } from '@/blocks/Background';
 import Sketch from '@uiw/react-color-sketch';
 import Wheel from '@uiw/react-color-wheel';
 import { useControllableValue, useLocalStorageState } from 'ahooks';
-import { Popover } from 'antd';
+import { Typography, Popover } from 'antd';
 import clsx from 'clsx';
-import React from 'react';
+import React, { useState } from 'react';
+
+const { Link, Text } = Typography;
 
 function Colours({
+	maxColours,
 	ctx,
 	dispatch,
 	block,
 	setBlock,
 }: {
+	maxColours?: number;
 	ctx: IPicexContext;
 	dispatch: IPicexDispatch;
 	block: null | BlockBackground;
@@ -20,6 +24,8 @@ function Colours({
 	const viewport = ctx.blocks[0];
 	const value = block?.backgroundColor;
 
+	const [v, setV] = useState('');
+	const [open, setOpen] = useState(false);
 	const [hex, setHex] = useControllableValue({
 		value: typeof value === 'string' && value ? value : 'transparent',
 		onChange: (v) => {
@@ -84,18 +90,38 @@ function Colours({
 			<hr className="my-[18px]" />
 			<ul className="flex flex-wrap gap-4">
 				<Popover
+					open={open}
+					onOpenChange={setOpen}
 					content={
-						<Sketch
-							color={hex}
-							onChange={(color) => {
-								setHex(color.hex);
-								setLocalHexes((prev) =>
-									prev?.includes(color.hex)
-										? prev
-										: [...(prev ?? []), color.hex],
-								);
-							}}
-						/>
+						<>
+							<Sketch
+								color={v}
+								presetColors={false}
+								onChange={(color) => setV(color.hex)}
+							/>
+							<div className="mt-2 flex justify-end gap-4">
+								<Text
+									className="cursor-pointer"
+									onClick={() => setOpen(false)}
+								>
+									Cancel
+								</Text>
+								<Link
+									onClick={() => {
+										setHex(v);
+										setLocalHexes((prev) =>
+											(prev?.includes(v) ? prev : [...(prev ?? []), v]).slice(
+												0,
+												maxColours,
+											),
+										);
+										setOpen(false);
+									}}
+								>
+									Confirm
+								</Link>
+							</div>
+						</>
 					}
 					trigger="click"
 					placement="bottomLeft"

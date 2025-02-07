@@ -10,6 +10,7 @@ import { cn } from '@/utils/cn';
 import { BlockBackground } from '@/blocks/Background';
 
 function Images({
+	maxImages,
 	block,
 	setBlock,
 	ctx,
@@ -17,6 +18,7 @@ function Images({
 	customRequest = uploadFileByBase64,
 	...rest
 }: Partial<UploadProps> & {
+	maxImages?: number;
 	block: null | BlockBackground;
 	setBlock: (block: BlockBackground) => void;
 	ctx: IPicexContext;
@@ -83,9 +85,10 @@ function Images({
 						onChange={({ file }) => {
 							if (file.response?.url && file.status === 'done') {
 								setBgImages((prev = []) =>
-									prev.some((x) => x.url === file.response!.url)
+									(prev.some((x) => x.url === file.response!.url)
 										? prev
-										: [...(prev || []), file.response!],
+										: [...(prev || []), file.response!]
+									).slice(0, maxImages),
 								);
 								setBgImage4Root(file.response!.url);
 							}

@@ -1,8 +1,8 @@
 import { IPicexToolRenderParams, PicexTool } from '../types';
 import Icon from './icon.svg?react';
-import { UploadBoxProps } from '@/components/common/UploadBox';
 import Panel from './components/Panel';
 import './index.css';
+import { PicexToolBackgroundProps } from './types';
 
 export class PicexToolBackground extends PicexTool {
 	key = 'background';
@@ -10,7 +10,7 @@ export class PicexToolBackground extends PicexTool {
 	visible = true;
 	disabled = false;
 
-	constructor(protected props?: UploadBoxProps) {
+	constructor(protected props?: PicexToolBackgroundProps) {
 		super();
 	}
 
