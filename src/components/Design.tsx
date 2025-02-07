@@ -12,6 +12,15 @@ import {
 } from './common/UploadBox';
 import { HistoryBtns } from './common/HistoryBtns';
 
+export interface DesignProps {
+	viewport?: PicexContentActionInit['viewport'];
+	images?: PicexContentActionInit['images'];
+	watermark?: WaterMark;
+	historable?: boolean;
+	uploadProps?: UploadBoxProps;
+	downloadProps?: DownloadProps;
+}
+
 const defaultViewport = {
 	width: 820,
 	height: 590,
@@ -27,15 +36,11 @@ export function PicexDesign({
 	viewport = defaultViewport,
 	images,
 	watermark,
+	historable = true,
 	uploadProps,
+	downloadProps,
 	children,
-}: PropsWithChildren<{
-	viewport?: PicexContentActionInit['viewport'];
-	images?: PicexContentActionInit['images'];
-	watermark?: WaterMark;
-	uploadProps?: UploadBoxProps;
-	downloadProps?: DownloadProps;
-}>) {
+}: PropsWithChildren<DesignProps>) {
 	const { blocks } = usePicexCtx();
 	const dispatch = usePicexDispatch();
 	// const el = useRef<HTMLDivElement>(null);
@@ -80,9 +85,10 @@ export function PicexDesign({
 				className="z-10"
 				blocks={blocks}
 				uploadProps={uploadProps}
+				downloadProps={downloadProps}
 				onChange={onChange}
 			/>
-			<HistoryBtns />
+			{historable ? <HistoryBtns /> : null}
 			<div
 				// ref={el}
 				className="picex-design-content h-full flex items-center justify-center"

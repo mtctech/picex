@@ -1,7 +1,7 @@
 import React, { PropsWithChildren, useReducer } from 'react';
 import PicexLayout from './Layout';
 import { PicexToolBar } from './ToolBar';
-import { PicexDesign } from './Design';
+import { DesignProps, PicexDesign } from './Design';
 import { PicexProperties } from './Properties';
 import { PicexBlockTree } from './BlockTree';
 import { PicexTool, PicexToolBackground } from '../tools';
@@ -11,13 +11,11 @@ import {
 	PicexDispatchContext,
 } from '@/core/context';
 import { reducer } from '@/core/reducer';
-import { WaterMark } from '@/blocks/WaterMark';
-import { DownloadProps } from './common/Operators';
-import { UploadBoxProps } from './common/UploadBox';
 
 export function PicexEditor({
 	tools = [new PicexToolBackground()],
 	multiple = false,
+	historable = true,
 	images,
 	watermark,
 	viewport,
@@ -26,17 +24,14 @@ export function PicexEditor({
 	right,
 	uploadProps,
 	downloadProps,
-}: PropsWithChildren<{
-	tools?: PicexTool[];
-	multiple?: boolean;
-	viewport?: PicexContentActionInit['viewport'];
-	images?: PicexContentActionInit['images'];
-	watermark?: WaterMark;
-	left?: PropsWithChildren<{}>;
-	right?: PropsWithChildren<{}>;
-	uploadProps?: UploadBoxProps;
-	downloadProps?: DownloadProps;
-}>) {
+}: PropsWithChildren<
+	DesignProps & {
+		tools?: PicexTool[];
+		multiple?: boolean;
+		left?: PropsWithChildren<{}>;
+		right?: PropsWithChildren<{}>;
+	}
+>) {
 	const [state, dispatch] = useReducer(reducer, DefaultPicexContext);
 
 	return (
@@ -61,6 +56,7 @@ export function PicexEditor({
 						images={images}
 						watermark={watermark}
 						viewport={viewport}
+						historable={historable}
 						uploadProps={{
 							...uploadProps,
 							multiple,
