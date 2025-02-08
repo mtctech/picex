@@ -6,13 +6,20 @@ import { useEffect } from 'react';
 
 export function useWaterMark(watermark?: WaterMark) {
 	const state = usePicexCtx();
+	const prev = usePrevious(watermark, () => true);
 	const dispatch = usePicexDispatch();
-	const root = state.blocks[0] as undefined | BlockViewport;
-	const width = root?.width;
-	const height = root?.height;
 
 	useEffect(() => {
-		if (width && height && watermark?.value) {
+		const root = state.blocks[0] as undefined | BlockViewport;
+		const flag = state.blocks.some((x) => x instanceof BlockWaterMark);
+		const width = root?.width;
+		const height = root?.height;
+		if (
+			width &&
+			height &&
+			watermark?.value &&
+			(watermark?.value !== prev?.value || !flag)
+		) {
 			const { value, props } = watermark;
 			const options = {
 				width,
@@ -29,5 +36,5 @@ export function useWaterMark(watermark?: WaterMark) {
 				});
 			});
 		}
-	}, [watermark, width, height]);
+	}, [watermark, prev, state.blocks]);
 }
