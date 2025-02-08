@@ -10,9 +10,9 @@ export default function PicexLayout({
 }>) {
 	return (
 		<section className="flex h-full">
-			<div className="w-1/3 max-w-[396px]">{left}</div>
-			<div className="min-w-0 flex-1 relative bg-[#F8FAFC]">{children}</div>
-			<div className="max-w-1/5 flex-[0_1_0]">{right}</div>
+			<div className="relative w-1/3 max-w-[396px]">{left}</div>
+			<div className="relative min-w-0 flex-1 bg-[#F8FAFC]">{children}</div>
+			<div className="relative max-w-1/5 flex-[0_1_0]">{right}</div>
 		</section>
 	);
 }

@@ -75,6 +75,11 @@ export function PicexDesign({
 				images,
 				viewport,
 			});
+		} else {
+			dispatch({
+				type: 'cover',
+				blocks: [],
+			});
 		}
 	}, [images, viewport.width, viewport.height]);
 	useWaterMark(watermark);
