@@ -44,6 +44,8 @@ export function Operators({
 						const btn = (
 							<Button
 								size="small"
+								type="primary"
+								shape="round"
 								loading={loading}
 							>
 								Upload a new image
@@ -65,7 +67,7 @@ export function Operators({
 			) : null}
 			<Button
 				size="small"
-				color="primary"
+				type="primary"
 				shape="round"
 				disabled={!blocks.length}
 				loading={downloading}

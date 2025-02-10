@@ -12,6 +12,8 @@ import {
 } from './common/UploadBox';
 import { HistoryBtns } from './common/HistoryBtns';
 
+import './Design.css';
+
 export interface DesignProps {
 	viewport?: PicexContentActionInit['viewport'];
 	images?: PicexContentActionInit['images'];

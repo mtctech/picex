@@ -44,15 +44,15 @@ function Panel({
 	}
 
 	return (
-		<>
+		<div className="picex-plugin-background">
 			<Segmented<Tabs>
 				block
-				className="mb-4"
+				className="mb-4 rounded-lg text-base leading-10"
 				options={Object.values(Tabs)}
 				onChange={setTab}
 			/>
-			<div className="picex-plugin-background">{node}</div>
-		</>
+			<div>{node}</div>
+		</div>
 	);
 }
 

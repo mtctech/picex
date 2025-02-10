@@ -1,0 +1,15 @@
+.picex-design {
+	.ant-btn.ant-btn-variant-filled {
+		background: #d9d9d9;
+	}
+	.ant-btn.ant-btn-variant-filled:disabled {
+		background: #ebebeb;
+	}
+
+	.ant-btn.ant-btn-variant-solid {
+		color: #fff;
+	}
+	.ant-btn.ant-btn-variant-solid:disabled {
+		background: #c3c3c3;
+	}
+}
