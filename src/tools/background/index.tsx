@@ -12,6 +12,8 @@ export class PicexToolBackground extends PicexTool {
 
 	constructor(protected props?: PicexToolBackgroundProps) {
 		super();
+
+		this.name = props?.name || this.name;
 	}
 
 	renderIcon() {
