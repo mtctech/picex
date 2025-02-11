@@ -18,6 +18,7 @@ import { v4 as uuid } from 'uuid';
 import { BlockTypes, IBlock, IBlockPropKeys } from './types';
 import { DEBUG } from '@/utils/consts';
 import { mixinHoverBorder } from './mixins/hover';
+import { isActive } from './utils';
 
 export interface SerializedBlockBackgroundProps
 	extends SerializedRectProps,
@@ -49,11 +50,9 @@ export class BlockBackground<
 		} else {
 			img.scaleToHeight(size.height);
 		}
-		const canvas = new StaticCanvas(undefined, {
-			width: img.getScaledWidth(),
-			height: img.getScaledHeight(),
-		});
+		const canvas = new StaticCanvas(undefined, size);
 		canvas.add(img);
+		canvas.centerObject(img);
 		canvas.renderAll();
 		return new Pattern({
 			source: canvas.toCanvasElement(),
@@ -76,13 +75,9 @@ export class BlockBackground<
 		size: Pick<FabricObjectProps, 'width' | 'height'>,
 	) {
 		const pattern = await BlockBackground.patternFromURL(url, size);
-		const { width, height } = pattern.source as
-			| HTMLImageElement
-			| HTMLCanvasElement;
 
 		return new BlockBackground({
-			width,
-			height,
+			...size,
 			fill: pattern,
 		});
 	}
@@ -149,6 +144,11 @@ export class BlockBackground<
 		const controlable = this?.fill instanceof Pattern;
 		this.selectable = controlable;
 		this.hoverCursor = controlable ? 'move' : 'default';
+
+		if (!this.selectable && isActive(this)) {
+			this.canvas?.discardActiveObject();
+			// this.canvas?.renderAll();
+		}
 	}
 
 	toObject<

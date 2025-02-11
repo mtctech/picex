@@ -110,6 +110,7 @@ const updateBlock = (
 	const { block, payload } = action;
 	if (payload) {
 		block.set(payload);
+		block.setCoords();
 	}
 
 	return {

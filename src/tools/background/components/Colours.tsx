@@ -23,7 +23,7 @@ function Colours({
 	setBlock: (block: BlockBackground) => void;
 }) {
 	const viewport = ctx.blocks[0];
-	const value = block?.backgroundColor;
+	const value = block?.fill;
 
 	const [v, setV] = useState('');
 	const [open, setOpen] = useState(false);
@@ -34,6 +34,8 @@ function Colours({
 				return;
 			}
 			if (block) {
+				block.setX(viewport.getX());
+				block.setY(viewport.getY());
 				dispatch({
 					type: 'updateBlock',
 					block,
