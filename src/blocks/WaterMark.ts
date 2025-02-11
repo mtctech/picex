@@ -21,7 +21,7 @@ const defaultOffsetY = 40;
 
 export interface WaterMark {
 	value: string;
-	props?: ImageProps | TextProps;
+	props?: Partial<ImageProps> | Partial<TextProps>;
 }
 
 export interface SerializedBlockWaterMarkProps
@@ -93,14 +93,16 @@ export class BlockWaterMark<
 		offsetX = defaultOffsetX,
 		offsetY = defaultOffsetY,
 	) {
+		const w = object.getScaledWidth();
+		const h = object.getScaledHeight();
 		const size = {
-			width: object.width * 2 + offsetX * 2,
-			height: object.height * 2 + offsetY * 2,
+			width: w * 2 + offsetX * 2,
+			height: h * 2 + offsetY * 2,
 		};
 		const cloned = await object.clone();
 		cloned.set({
-			left: object.width + offsetX * 2,
-			top: object.height + offsetY * 2,
+			left: w + offsetX * 2,
+			top: h + offsetY * 2,
 		});
 
 		const patternSourceCanvas = new StaticCanvas(undefined, size);
@@ -108,7 +110,6 @@ export class BlockWaterMark<
 
 		return new BlockWaterMark({
 			canvas: patternSourceCanvas,
-			top: -rectOpts.height,
 			...rectOpts,
 		});
 	}
