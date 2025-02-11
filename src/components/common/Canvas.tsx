@@ -47,44 +47,57 @@ export function PicexCanvas({ children }: PropsWithChildren) {
 		const currBlocks = [...(fcanvas._objects as Block[])];
 		const isInit =
 			!currBlocks.length || currBlocks[0]?.id !== nextBlocks[0]?.id;
-		const isAddOrRemove =
-			!isInit &&
-			!fcanvas.history?.isProcessing() &&
-			(nextBlocks.some(
-				(block) => !currBlocks.includes(block) && isContentBlock(block),
-			) ||
-				currBlocks.some(
-					(block) => !nextBlocks.includes(block) && isContentBlock(block),
-				));
-		const getHistroyAction = (prev: Block[], next: Block[]) => async () => {
-			dispatch({
-				type: 'cover',
-				blocks: prev,
-			});
-			return getHistroyAction(next, prev);
-		};
+		// const isAddOrRemove =
+		// 	!isInit &&
+		// 	!fcanvas.history?.isProcessing() &&
+		// 	(nextBlocks.some(
+		// 		(block) => !currBlocks.includes(block) && isContentBlock(block),
+		// 	) ||
+		// 		currBlocks.some(
+		// 			(block) => !nextBlocks.includes(block) && isContentBlock(block),
+		// 		));
+		// const getHistroyAction = (prev: Block[], next: Block[]) => async () => {
+		// 	dispatch({
+		// 		type: 'cover',
+		// 		blocks: prev,
+		// 	});
+		// 	return getHistroyAction(next, prev);
+		// };
 
-		fcanvas.history?.disable();
-		fcanvas.clear();
-		nextBlocks.forEach((block) => {
-			fcanvas.add(block);
+		if (isInit) {
+			fcanvas.history?.disable();
+		}
+
+		// fcanvas.clear();
+		currBlocks.forEach((block) => {
+			if (!nextBlocks.includes(block)) {
+				fcanvas.remove(block);
+			}
+		});
+		nextBlocks.forEach((block, i) => {
 			// should check if same id because of block clone cache by history
-			if (!currBlocks.some((item) => item === block || item.id === block.id)) {
+			const isAdd = !currBlocks.some(
+				(item) => item === block || item.id === block.id,
+			);
+			if (isAdd) {
+				fcanvas.insertAt(i, block);
 				fcanvas.centerObject(block);
+			} else {
+				fcanvas.moveObjectTo(block, i);
 			}
 		});
 		fcanvas.clipPath = nextBlocks[0];
 		fcanvas.renderAll();
-		fcanvas.history?.enable();
 
 		if (isInit) {
+			fcanvas.history?.enable();
 			fcanvas.history?.clear();
 		}
-		if (isAddOrRemove) {
-			Promise.all(currBlocks.map((x) => x.clone())).then((prevBlocks) => {
-				fcanvas.history?.append(getHistroyAction(prevBlocks, nextBlocks));
-			});
-		}
+		// if (isAddOrRemove) {
+		// 	Promise.all(currBlocks.map((x) => x.clone())).then((prevBlocks) => {
+		// 		fcanvas.history?.append(getHistroyAction(prevBlocks, nextBlocks));
+		// 	});
+		// }
 	}, [ctx]);
 
 	return (

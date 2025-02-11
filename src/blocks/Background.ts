@@ -11,6 +11,8 @@ import {
 	TClassProperties,
 	TFiller,
 	TOptions,
+	Transform,
+	util,
 } from 'fabric';
 import { v4 as uuid } from 'uuid';
 import { BlockTypes, IBlock, IBlockPropKeys } from './types';
@@ -95,8 +97,42 @@ export class BlockBackground<
 	}
 
 	set fill(v: string | TFiller | null) {
+		if (v === this._fill) {
+			return;
+		}
+
+		const original = {
+			...util.saveObjectTransform(this),
+			originX: 0,
+			originY: 0,
+			fill: this._fill,
+		};
+		const { flipX, flipY, fill, top, left, angle, ...rest } = original;
 		this._fill = v;
 		this.toggleSelectable();
+		const options = {
+			target: this,
+			transform: {
+				target: this,
+				corner: '',
+				offsetX: 0,
+				offsetY: 0,
+				ex: 0,
+				ey: 0,
+				lastX: 0,
+				lastY: 0,
+				shiftKey: false,
+				altKey: false,
+				actionPerformed: true,
+				theta: util.degreesToRadians(this.angle),
+				width: this.width,
+				height: this.height,
+				...rest,
+				original,
+			} as Transform,
+		};
+		this.canvas?.fire('object:modified', options);
+		this.fire('modified', options);
 	}
 
 	constructor(props?: Props) {

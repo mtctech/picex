@@ -34,6 +34,7 @@ type HistoryItem =
 			type: HistoryTypes;
 			object: fabric.FabricObject;
 			data: ReturnType<fabric.FabricObject['toObject']>;
+			index: number;
 	  }
 	| HistoryAction;
 
@@ -43,6 +44,7 @@ class FabricHistory {
 	historyRedo: HistoryItem[] = [];
 
 	protected _historyProcessing = false;
+	protected _historyDisabled = false;
 
 	constructor(private canvas: fabric.Canvas) {
 		this.canvas.on({
@@ -59,11 +61,11 @@ class FabricHistory {
 	}
 
 	disable() {
-		this._historyProcessing = true;
+		this._historyDisabled = true;
 	}
 
 	enable() {
-		this._historyProcessing = false;
+		this._historyDisabled = false;
 	}
 
 	async undo() {
@@ -101,10 +103,15 @@ class FabricHistory {
 	}
 
 	append(item: HistoryItem, undoing = false) {
+		if (this._historyDisabled) return;
+
 		if (undoing) {
 			this.historyRedo.push(item);
 		} else {
 			this.historyUndo.push(item);
+			if (!this._historyProcessing) {
+				this.historyRedo = [];
+			}
 		}
 		this.canvas.fire('history:append');
 	}
@@ -127,6 +134,7 @@ class FabricHistory {
 				[HistoryTypes.MODIFIED]: HistoryTypes.MODIFIED,
 			}[type],
 			object,
+			index: this.canvas.getObjects().indexOf(object),
 			data: type === HistoryTypes.MODIFIED ? object.toObject() : data,
 		};
 
@@ -145,11 +153,12 @@ class FabricHistory {
 		},
 		type: HistoryTypes,
 	) {
-		if (this._historyProcessing || !target) return;
+		if (this._historyProcessing || !target || !target.evented) return;
 
 		const snapshot = {
 			type,
 			object: target,
+			index: this.canvas.getObjects().indexOf(target),
 			data: transform?.original ?? target.toObject(),
 		};
 
@@ -161,23 +170,26 @@ class FabricHistory {
 			return snapshot();
 		}
 
-		const { object, type, data } = snapshot;
+		const { object, type, data, index } = snapshot;
 		switch (type) {
 			case HistoryTypes.ADDED:
 				this.canvas.remove(object);
 				break;
 			case HistoryTypes.REMOVED:
 				this.canvas.add(object);
+				this.canvas.moveObjectTo(object, index);
 				break;
 			case HistoryTypes.MODIFIED:
 				const target = this.canvas._objects.find(
 					(x) => x === object || x.id === object.id,
 				);
 				if (target) {
-					target.set(data);
+					const options = await fabric.util.enlivenObjectEnlivables(data);
+					target.set(options);
 				}
 				break;
 		}
+		object.setCoords();
 		this.canvas.renderAll();
 	}
 }
