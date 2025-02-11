@@ -1,5 +1,6 @@
 import { BlockBackground } from '@/blocks/Background';
-import Sketch from '@uiw/react-color-sketch';
+// import Sketch from '@uiw/react-color-sketch';
+import Sketch, { ChromeInputType } from '@uiw/react-color-chrome';
 import Wheel from '@uiw/react-color-wheel';
 import { useControllableValue, useLocalStorageState } from 'ahooks';
 import { Typography, Popover } from 'antd';
@@ -96,10 +97,16 @@ function Colours({
 						<>
 							<Sketch
 								color={v}
-								presetColors={false}
-								onChange={(color) => setV(color.hex)}
+								inputType={ChromeInputType.HEXA}
+								placement={null as any}
+								style={{
+									border: 'none',
+									boxShadow: 'none',
+								}}
+								// presetColors={false}
+								onChange={(color) => setV(color.hexa)}
 							/>
-							<div className="mt-2 flex justify-end gap-4">
+							<div className="flex justify-end gap-4">
 								<Text
 									className="cursor-pointer"
 									onClick={() => setOpen(false)}
