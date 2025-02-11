@@ -9,6 +9,7 @@ import {
 	SerializedRectProps,
 	StaticCanvas,
 	TClassProperties,
+	TFiller,
 	TOptions,
 } from 'fabric';
 import { v4 as uuid } from 'uuid';
@@ -86,14 +87,32 @@ export class BlockBackground<
 
 	declare blockType: BlockTypes;
 
+	declare _fill: string | TFiller | null;
+
+	// @ts-ignore
+	get fill() {
+		return this._fill;
+	}
+
+	set fill(v: string | TFiller | null) {
+		this._fill = v;
+		this.toggleSelectable();
+	}
+
 	constructor(props?: Props) {
 		super(props);
 
 		this.id = props?.id || uuid();
 		this.blockType = BlockTypes.Background;
-		this.hoverCursor = 'move';
+		this.toggleSelectable();
 
 		mixinHoverBorder(this);
+	}
+
+	toggleSelectable() {
+		const controlable = this?.fill instanceof Pattern;
+		this.selectable = controlable;
+		this.hoverCursor = controlable ? 'move' : 'default';
 	}
 
 	toObject<

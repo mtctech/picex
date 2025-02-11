@@ -5,7 +5,7 @@ export function mixinHoverBorder(object: FabricObject) {
 	object.on({
 		mouseover: () => {
 			const ctx = object.canvas?.getContext();
-			if (!isActive(object) && ctx) {
+			if (object.selectable && !isActive(object) && ctx) {
 				object._renderControls(ctx, {
 					cornerSize: 0,
 					hasControls: false,
