@@ -5,7 +5,12 @@ export function scaleToFitSize(
 	size: { width: number; height: number },
 ) {
 	const { width, height } = object;
-	if (width > height) {
+	if (width <= size.width && height <= size.height) {
+		return;
+	}
+	const widthRatio = size.width / width;
+	const heightRatio = size.height / height;
+	if (widthRatio < heightRatio) {
 		object.scaleToWidth(size.width);
 	} else {
 		object.scaleToHeight(size.height);
@@ -20,14 +25,16 @@ export function getScaledFitSize(
 	if (width <= size.width && height <= size.height) {
 		return viewport;
 	}
-	if (width > height) {
+	const widthRatio = size.width / width;
+	const heightRatio = size.height / height;
+	if (widthRatio < heightRatio) {
 		return {
 			width: size.width,
-			height: (size.width / width) * height,
+			height: widthRatio * height,
 		};
 	} else {
 		return {
-			width: (size.height / height) * width,
+			width: heightRatio * width,
 			height: size.height,
 		};
 	}

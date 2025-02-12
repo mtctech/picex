@@ -13,6 +13,10 @@ function Editor() {
 			watermark={{
 				value: 'Picex',
 			}}
+			// viewport={{
+			// 	width: 920,
+			// 	height: 613,
+			// }}
 			images={images}
 			// images={[
 			// 	{
