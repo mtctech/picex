@@ -13,6 +13,7 @@ import {
 import { HistoryBtns } from './common/HistoryBtns';
 
 import './Design.css';
+import { getScaledFitSize } from '@/utils/scale';
 
 export interface DesignProps {
 	viewport?: PicexContentActionInit['viewport'];
@@ -23,7 +24,7 @@ export interface DesignProps {
 	downloadProps?: DownloadProps;
 }
 
-const defaultViewport = {
+const maxViewport = {
 	width: 820,
 	height: 590,
 };
@@ -35,7 +36,7 @@ const defaultViewport = {
  * 2. 根据Blocks树渲染画布内容
  */
 export function PicexDesign({
-	viewport = defaultViewport,
+	viewport = maxViewport,
 	images,
 	watermark,
 	historable = true,
@@ -56,7 +57,7 @@ export function PicexDesign({
 			) {
 				dispatch({
 					type: 'init',
-					viewport,
+					viewport: getScaledFitSize(viewport, maxViewport),
 					images: fileList.map(({ response }) => {
 						return {
 							url: response!.url,
