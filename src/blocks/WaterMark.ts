@@ -50,6 +50,8 @@ export class BlockWaterMark<
 {
 	blockType = BlockTypes.WaterMark;
 
+	objectCaching = false;
+
 	selectable = false;
 
 	evented = false;

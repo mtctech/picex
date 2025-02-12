@@ -1,7 +1,7 @@
 import React, { PropsWithChildren, useEffect, useRef } from 'react';
 import { usePicexCtx, usePicexDispatch } from '@/core/context';
 import { Canvas } from 'fabric';
-import { Block, BlockTypes } from '@/blocks';
+import { Block, BlockTypes, BlockWaterMark } from '@/blocks';
 import { isContentBlock } from '@/blocks/utils';
 // import 'fabric-history/src/index';
 
@@ -84,6 +84,10 @@ export function PicexCanvas({ children }: PropsWithChildren) {
 				fcanvas.centerObject(block);
 			} else {
 				fcanvas.moveObjectTo(block, i);
+			}
+			if (block instanceof BlockWaterMark) {
+				// not renderred occasionally with cache
+				block.dirty = true;
 			}
 		});
 		fcanvas.clipPath = nextBlocks[0];

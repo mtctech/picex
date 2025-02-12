@@ -1,12 +1,11 @@
 import { BlockViewport, BlockWaterMark } from '@/blocks';
 import { WaterMark } from '@/blocks/WaterMark';
 import { usePicexCtx, usePicexDispatch } from '@/core/context';
-import { usePrevious } from 'ahooks';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 
-export function useWaterMark(watermark?: WaterMark) {
+export function useWaterMark(input?: WaterMark) {
 	const state = usePicexCtx();
-	const prev = usePrevious(watermark, () => true);
+	const watermark = useMemo(() => input, [JSON.stringify(input)]);
 	const dispatch = usePicexDispatch();
 
 	useEffect(() => {
@@ -14,12 +13,8 @@ export function useWaterMark(watermark?: WaterMark) {
 		const flag = state.blocks.some((x) => x instanceof BlockWaterMark);
 		const width = root?.width;
 		const height = root?.height;
-		if (
-			width &&
-			height &&
-			watermark?.value &&
-			(watermark?.value !== prev?.value || !flag)
-		) {
+		// console.log('>>> ', width, height, watermark?.value, !flag, state.blocks);
+		if (width && height && watermark?.value && !flag) {
 			const { value, props } = watermark;
 			const options = {
 				width,
@@ -36,5 +31,5 @@ export function useWaterMark(watermark?: WaterMark) {
 				});
 			});
 		}
-	}, [watermark, prev, state.blocks]);
+	}, [watermark, state.blocks]);
 }
