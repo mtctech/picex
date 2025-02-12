@@ -128,6 +128,7 @@ export class BlockWaterMark<
 			angle: 15,
 			top: -height,
 			...props,
+			canvas: undefined,
 			fill: pattern,
 			width: width * 2,
 			height: height * 2,
