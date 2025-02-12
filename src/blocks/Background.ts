@@ -100,7 +100,8 @@ export class BlockBackground<
 			...util.saveObjectTransform(this),
 			originX: 0,
 			originY: 0,
-			fill: this._fill,
+			fill:
+				typeof this._fill === 'string' ? this._fill : this._fill?.toObject(),
 		};
 		const { flipX, flipY, fill, top, left, angle, ...rest } = original;
 		this._fill = v;
