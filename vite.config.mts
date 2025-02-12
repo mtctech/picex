@@ -28,5 +28,6 @@ export default defineConfig({
 			fileName: 'index',
 			formats: ['cjs', 'es', 'umd'],
 		},
+		sourcemap: true,
 	},
 });
