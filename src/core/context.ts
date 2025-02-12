@@ -4,7 +4,13 @@ import { PicexTool } from '@/tools';
 import { Canvas } from 'fabric';
 
 declare global {
+	interface Size {
+		width: number;
+		height: number;
+	}
 	interface IPicexContext {
+		naturalSize?: Size;
+		displaySize?: Size;
 		watermark: string;
 		blocks: Block[];
 		tools: PicexTool[];
@@ -19,15 +25,13 @@ declare global {
 
 	type PicexContentActionInit = {
 		type: 'init';
-		images: Array<{
-			url: string;
-			width: number;
-			height: number;
-		}>;
-		viewport: {
-			width: number;
-			height: number;
-		};
+		images: Array<
+			Size & {
+				url: string;
+			}
+		>;
+		naturalSize?: Size;
+		displaySize?: Size;
 	};
 	type PicexContentActionCover = {
 		type: 'cover';
@@ -63,7 +67,14 @@ declare global {
 	type IPicexDispatch = React.Dispatch<PicexContextAction>;
 }
 
+const defaultMaxPort = {
+	width: 820,
+	height: 590,
+};
+
 export const DefaultPicexContext: IPicexContext = {
+	naturalSize: defaultMaxPort,
+	displaySize: defaultMaxPort,
 	watermark: 'Picex',
 	blocks: [],
 	tools: [],

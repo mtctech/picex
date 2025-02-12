@@ -16,18 +16,14 @@ import './Design.css';
 import { getScaledFitSize } from '@/utils/scale';
 
 export interface DesignProps {
-	viewport?: PicexContentActionInit['viewport'];
+	viewport?: Size;
+	maxport?: Size;
 	images?: PicexContentActionInit['images'];
 	watermark?: WaterMark;
 	historable?: boolean;
 	uploadProps?: UploadBoxProps;
 	downloadProps?: DownloadProps;
 }
-
-const maxViewport = {
-	width: 820,
-	height: 590,
-};
 
 /**
  * 主区域画布
@@ -36,7 +32,8 @@ const maxViewport = {
  * 2. 根据Blocks树渲染画布内容
  */
 export function PicexDesign({
-	viewport = maxViewport,
+	viewport,
+	maxport,
 	images,
 	watermark,
 	historable = true,
@@ -57,7 +54,8 @@ export function PicexDesign({
 			) {
 				dispatch({
 					type: 'init',
-					viewport: getScaledFitSize(viewport, maxViewport),
+					naturalSize: viewport,
+					displaySize: maxport,
 					images: fileList.map(({ response }) => {
 						return {
 							url: response!.url,
@@ -76,7 +74,8 @@ export function PicexDesign({
 			dispatch({
 				type: 'init',
 				images,
-				viewport,
+				naturalSize: viewport,
+				displaySize: maxport,
 			});
 		} else {
 			dispatch({
@@ -84,7 +83,13 @@ export function PicexDesign({
 				blocks: [],
 			});
 		}
-	}, [images, viewport.width, viewport.height]);
+	}, [
+		images,
+		viewport?.width,
+		viewport?.height,
+		maxport?.width,
+		maxport?.height,
+	]);
 	useWaterMark(watermark);
 
 	return (

@@ -1,5 +1,5 @@
 import { BlockViewport, BlockImage, BlockWaterMark } from '@/blocks';
-import { scaleToFitSize } from '@/utils/scale';
+import { getScaledFitSize, scaleToFitSize } from '@/utils/scale';
 import { wrapHistory } from './history';
 
 export const reducer = wrapHistory(
@@ -26,14 +26,17 @@ export const reducer = wrapHistory(
 );
 
 const init = (state: IPicexContext, action: PicexContentActionInit) => {
-	const { images, viewport: size } = action;
+	const {
+		images,
+		naturalSize: size,
+		displaySize: maxSize = state.displaySize,
+	} = action;
 	// const width = Math.max(...images.map((image) => image.width));
 	// const height = Math.max(...images.map((image) => image.height));
-	const viewport = new BlockViewport({
-		...size,
-	});
+	const viewport = !size ? maxSize! : getScaledFitSize(size, maxSize!);
+	const blockViewport = new BlockViewport(viewport);
 	const nextBlocks = [
-		viewport,
+		blockViewport,
 		...images.map(({ url, width, height }) => {
 			const img = new Image();
 			img.crossOrigin = 'anonymous';
@@ -43,13 +46,15 @@ const init = (state: IPicexContext, action: PicexContentActionInit) => {
 				width,
 				height,
 			});
-			scaleToFitSize(block, size);
+			scaleToFitSize(block, viewport);
 			return block;
 		}),
 	];
 
 	return {
 		...state,
+		naturalSize: size,
+		displaySize: maxSize,
 		blocks: nextBlocks,
 	};
 };

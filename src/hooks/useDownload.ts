@@ -9,7 +9,7 @@ import { ImageFormat } from 'fabric';
 export function useDownload(
 	opts?: UseRequestOptions<boolean, [ImageFormat, string | undefined]>,
 ) {
-	const { fcanvas, blocks } = usePicexCtx();
+	const { fcanvas, blocks, naturalSize: size } = usePicexCtx();
 
 	return useRequest(
 		async (type: ImageFormat, filename = `${Date.now()}`) => {
@@ -27,11 +27,17 @@ export function useDownload(
 			const opts = {
 				format: type,
 				multiplier: 1,
+				...size,
 			};
 
 			const canvas = await fcanvas.cloneWithoutData();
-			canvas.clipPath = viewport;
-			canvas.add(...(objects as Exclude<Block, BlockViewport>[]));
+			canvas.setWidth(viewport.width);
+			canvas.setHeight(viewport.height);
+			// canvas.clipPath = viewport;
+			(objects as Exclude<Block, BlockViewport>[]).map((x) => {
+				canvas.add(x);
+				canvas.centerObject(x);
+			});
 			canvas.renderAll();
 			dataURL = canvas.toDataURL(opts);
 
@@ -39,7 +45,7 @@ export function useDownload(
 		},
 		{
 			...opts,
-			refreshDeps: [blocks],
+			refreshDeps: [blocks, size],
 			manual: true,
 		},
 	);
