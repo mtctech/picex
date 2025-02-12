@@ -2,7 +2,7 @@ import type { UploadFileAttrs } from '@/components/common/UploadBox';
 import { BlockViewport } from '@/blocks/Viewport';
 import { FabricImage } from 'fabric';
 import { useLocalStorageState } from 'ahooks';
-import { AiOutlineUpload } from 'react-icons/ai';
+import { AiFillCloseCircle, AiOutlineUpload } from 'react-icons/ai';
 import React, { useCallback, useRef, useState } from 'react';
 import { Upload, UploadProps } from 'antd';
 import { uploadFileByBase64 } from '@/utils/image';
@@ -89,7 +89,7 @@ function Images({
 								setBgImages((prev = []) =>
 									(prev.some((x) => x.url === file.response!.url)
 										? prev
-										: [...(prev || []), file.response!]
+										: [file.response!, ...(prev || [])]
 									).slice(0, maxImages),
 								);
 								setBgImage4Root(file.response!.url);
@@ -113,7 +113,7 @@ function Images({
 						<li
 							key={file.url}
 							className={cn(
-								'cursor-pointer',
+								'group relative cursor-pointer',
 								'w-[5.375rem] aspect-[86/108] border border-solid rounded-2xl',
 								file.url === bgImage ? 'border-[#007AFF]' : 'border-[#D9D9D9]',
 							)}
@@ -123,7 +123,19 @@ function Images({
 							onClick={() => {
 								setBgImage4Root(file.url);
 							}}
-						></li>
+						>
+							<span
+								className="transition-opacity opacity-0 group-hover:opacity-100 absolute top-0 right-0 ml-1 mt-1 translate-x-1/2 -translate-y-1/2 text-xl hover:text-[#007AFF]"
+								onClick={(e) => {
+									e.stopPropagation();
+									setBgImages((prev) =>
+										!prev ? [] : prev.filter((x) => x.url !== file.url),
+									);
+								}}
+							>
+								<AiFillCloseCircle />
+							</span>
+						</li>
 					),
 				)}
 			</ul>

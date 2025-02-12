@@ -4,6 +4,7 @@ import Sketch, { ChromeInputType } from '@uiw/react-color-chrome';
 import Wheel from '@uiw/react-color-wheel';
 import { useControllableValue, useLocalStorageState } from 'ahooks';
 import { Typography, Popover } from 'antd';
+import { AiFillCloseCircle } from 'react-icons/ai';
 import clsx from 'clsx';
 import React, { useState } from 'react';
 
@@ -119,7 +120,7 @@ function Colours({
 									onClick={() => {
 										setHex(v);
 										setLocalHexes((prev) =>
-											(prev?.includes(v) ? prev : [...(prev ?? []), v]).slice(
+											(prev?.includes(v) ? prev : [v, ...(prev ?? [])]).slice(
 												0,
 												maxColours,
 											),
@@ -148,10 +149,16 @@ function Colours({
 				</Popover>
 				{localHexes?.map((localHex) => (
 					<ColourItem
+						removable
 						key={localHex}
 						hex={hex}
 						colour={localHex}
 						setHex={setHex}
+						onRemove={() => {
+							setLocalHexes((prev) =>
+								!prev ? [] : prev.filter((v) => v !== localHex),
+							);
+						}}
 					/>
 				))}
 			</ul>
@@ -164,29 +171,51 @@ function ColourItem({
 	colour,
 	border,
 	setHex,
+	removable,
+	onRemove,
 }: {
 	hex: string;
 	colour: string;
 	border?: string;
 	setHex: (hex: string) => void;
+	removable?: boolean;
+	onRemove?: (hex: string) => void;
 }) {
 	return (
 		<li
 			key={colour}
-			className={clsx(`w-[35px] h-[35px] rounded-xl cursor-pointer`, {
-				'border border-solid border-[#007aff]': hex === colour,
-			})}
+			className={clsx(
+				`group relative w-[35px] h-[35px] rounded-xl cursor-pointer`,
+				{
+					'border border-solid border-[#007aff]': hex === colour,
+				},
+			)}
 			style={{
 				border: border && hex !== colour ? `1px solid ${border}` : undefined,
-				background:
-					colour === 'transparent'
-						? `url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAMUlEQVQ4T2NkYGAQYcAP3uCTZhw1gGGYhAGBZIA/nYDCgBDAm9BGDWAAJyRCgLaBCAAgXwixzAS0pgAAAABJRU5ErkJggg==)`
-						: colour,
+				background: `url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAMUlEQVQ4T2NkYGAQYcAP3uCTZhw1gGGYhAGBZIA/nYDCgBDAm9BGDWAAJyRCgLaBCAAgXwixzAS0pgAAAABJRU5ErkJggg==)`,
 			}}
 			onClick={() => {
 				setHex(colour);
 			}}
-		/>
+		>
+			<div
+				className="w-full h-full rounded-xl"
+				style={{
+					background: colour,
+				}}
+			></div>
+			{removable ? (
+				<span
+					className="transition-opacity opacity-0 group-hover:opacity-100 absolute top-0 right-0 ml-1 mt-1 translate-x-1/2 -translate-y-1/2 text-xl hover:text-[#007AFF]"
+					onClick={(e) => {
+						e.stopPropagation();
+						onRemove?.(hex);
+					}}
+				>
+					<AiFillCloseCircle />
+				</span>
+			) : null}
+		</li>
 	);
 }
 
