@@ -20,7 +20,11 @@ export function HistoryBtns() {
 	useEffect(() => {
 		const canvas = fcanvas;
 		const handler = () => {
-			setCount((prev) => prev + 1);
+			// 避免
+			// Cannot update a component (`HistoryBtns`) while rendering a different component (`PicexEditor`)
+			requestIdleCallback(() => {
+				setCount((prev) => prev + 1);
+			});
 		};
 		events.forEach((event) => {
 			canvas?.on(event, handler);
