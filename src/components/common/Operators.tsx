@@ -66,6 +66,7 @@ export function Operators({
 				</UploadBox>
 			) : null}
 			<Button
+				className="w-24"
 				size="small"
 				type="primary"
 				shape="round"
