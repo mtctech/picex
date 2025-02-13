@@ -1,11 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 .picex-toolbar.ant-tabs {
 	.ant-tabs-nav {
 		border: 0;
-		border-right: 1px solid rgba(226, 232, 240, 0.8);
+
+		@apply border-r border-solid;
+		@apply border-[rgba(226,232,240,0.8)];
+		@apply dark:border-[rgba(80,80,80,0.8)];
 
 		.ant-tabs-tab {
 			border: 0;
 			padding: 18px 14px 18px 0;
+		}
+		.ant-tabs-tab-active {
+			@apply dark:bg-transparent;
 		}
 	}
 

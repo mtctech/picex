@@ -1,12 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 .picex-plugin-background {
 	.ant-segmented {
-		color: #666;
-		background: #d9d9d9;
-		filter: drop-shadow(0px 2px 2px #bfbfbf);
+		@apply bg-[#d9d9d9] text-[#666] drop-shadow-[0px_2px_2px_#bfbfbf];
+		@apply dark:bg-[#333] dark:text-[#959595] dark:drop-shadow-[0px_2px_2px_#000000];
 
 		.ant-segmented-item-selected {
-			color: #007aff;
-			background: #f8fafc;
+			@apply bg-[#f8fafc] text-[#007aff] hover:text-[#007aff];
+			@apply dark:bg-[#999] dark:text-[#fff] dark:hover:text-[#fff];
 		}
 
 		.ant-segmented-item-label {
