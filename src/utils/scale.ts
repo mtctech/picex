@@ -3,9 +3,10 @@ import { FabricObject } from 'fabric';
 export function scaleToFitSize(
 	object: FabricObject,
 	size: { width: number; height: number },
+	forcing = false,
 ) {
 	const { width, height } = object;
-	if (width <= size.width && height <= size.height) {
+	if (!forcing && width <= size.width && height <= size.height) {
 		return;
 	}
 	const widthRatio = size.width / width;
