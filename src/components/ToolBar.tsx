@@ -34,7 +34,7 @@ export function PicexToolBar({ tools }: PicexToolBarProps) {
 						</span>
 					),
 					children: (
-						<div className="px-4 py-5 overflow-y-auto h-full">
+						<div className="pt-5 overflow-y-auto h-full">
 							{tool.renderPanel?.({ ctx, dispatch })}
 						</div>
 					),
