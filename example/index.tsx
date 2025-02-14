@@ -32,6 +32,10 @@ function Editor() {
 					</div>
 				),
 			}}
+			uploadProps={{
+				err: <span>Test</span>,
+				hidden: true,
+			}}
 		/>
 	);
 }

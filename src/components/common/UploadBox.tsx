@@ -24,6 +24,7 @@ export type UploadBoxProps = Omit<
 	Partial<UploadProps<UploadFileAttrs>>,
 	'children'
 > & {
+	err?: React.ReactNode;
 	visible?: boolean;
 	hidden?: boolean;
 	icon?: React.ReactNode;
@@ -36,6 +37,7 @@ export type UploadBoxProps = Omit<
 
 export function UploadBox({
 	children,
+	err,
 	icon,
 	iconClassName,
 	wordings,
@@ -100,14 +102,14 @@ export function UploadBox({
 							</p>
 						</div>
 					)}
-					{e && (
+					{err || e ? (
 						<Text
 							type="danger"
 							className="absolute top-full left-0 py-2"
 						>
-							{e.message}
+							{err || e?.message}
 						</Text>
-					)}
+					) : null}
 				</>
 			)}
 		</UploadWrapper>
