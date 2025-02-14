@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@uiw/color-convert':
+        specifier: ^2.4.0
+        version: 2.4.0(@babel/runtime@7.26.0)
       '@uiw/react-color-chrome':
         specifier: ^2.3.4
         version: 2.3.4(@babel/runtime@7.26.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -1082,6 +1085,11 @@ packages:
 
   '@uiw/color-convert@2.3.4':
     resolution: {integrity: sha512-av3PvCeP8o4H2a81n+vJwEEv8qGnQNonfCTiH9kO/CMQR1BvhGYijduM7RJzgHaAaVpE01opjNICQRyEx5qKVg==}
+    peerDependencies:
+      '@babel/runtime': '>=7.19.0'
+
+  '@uiw/color-convert@2.4.0':
+    resolution: {integrity: sha512-IFXAIe65Vm8czMyzd3/L+LRyYdF5PO5tQqwwojMtf9mChuzbI5tLMj2rjfcAwVaAi5+rQ6t82eyXQ2GZUfoeaA==}
     peerDependencies:
       '@babel/runtime': '>=7.19.0'
 
@@ -5102,6 +5110,10 @@ snapshots:
       eslint-visitor-keys: 4.2.0
 
   '@uiw/color-convert@2.3.4(@babel/runtime@7.26.0)':
+    dependencies:
+      '@babel/runtime': 7.26.0
+
+  '@uiw/color-convert@2.4.0(@babel/runtime@7.26.0)':
     dependencies:
       '@babel/runtime': 7.26.0
 

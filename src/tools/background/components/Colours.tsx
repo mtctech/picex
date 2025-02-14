@@ -2,6 +2,7 @@ import { BlockBackground } from '@/blocks/Background';
 // import Sketch from '@uiw/react-color-sketch';
 import Sketch, { ChromeInputType } from '@uiw/react-color-chrome';
 import Wheel from '@uiw/react-color-wheel';
+import { hexToRgba, rgbaToHexa } from '@uiw/color-convert';
 import { useControllableValue, useLocalStorageState } from 'ahooks';
 import { Typography, Popover } from 'antd';
 import { AiFillCloseCircle } from 'react-icons/ai';
@@ -26,7 +27,7 @@ function Colours({
 	const viewport = ctx.blocks[0];
 	const value = block?.fill;
 
-	const [v, setV] = useState('');
+	const [v, setV] = useState('#fff');
 	const [open, setOpen] = useState(false);
 	const [hex, setHex] = useControllableValue({
 		value: typeof value === 'string' && value ? value : 'transparent',
@@ -99,7 +100,7 @@ function Colours({
 					content={
 						<>
 							<Sketch
-								color={v}
+								color={/^#\w{3,6}$/.test(v) ? rgbaToHexa(hexToRgba(v)) : v}
 								inputType={ChromeInputType.HEXA}
 								placement={null as any}
 								style={{
