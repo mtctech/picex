@@ -24,6 +24,7 @@ export type UploadBoxProps = Omit<
 	Partial<UploadProps<UploadFileAttrs>>,
 	'children'
 > & {
+	visible?: boolean;
 	hidden?: boolean;
 	icon?: React.ReactNode;
 	iconClassName?: string;

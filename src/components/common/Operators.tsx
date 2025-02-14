@@ -23,6 +23,7 @@ export function Operators({
 	onChange: (info: UploadChangeInfo) => void;
 	className?: string;
 }) {
+	const { visible = !!blocks.length, hidden = false } = uploadProps || {};
 	const { format = 'png', filename } = downloadProps || {};
 	const { run: download, loading: downloading } = useDownload();
 
@@ -33,7 +34,7 @@ export function Operators({
 				className,
 			)}
 		>
-			{blocks.length && !uploadProps?.hidden ? (
+			{visible || !hidden ? (
 				<UploadBox
 					accept="image/*"
 					multiple={false}
