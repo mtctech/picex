@@ -48,12 +48,12 @@ function Panel({
 			<div className="px-4">
 				<Segmented<Tabs>
 					block
-					className="mb-4 rounded-lg text-base leading-10"
+					className="rounded-lg text-base leading-10"
 					options={Object.values(Tabs)}
 					onChange={setTab}
 				/>
 			</div>
-			<div className="px-4 flex-1 min-h-0 overflow-y-auto">{node}</div>
+			<div className="pt-4 px-4 flex-1 min-h-0 overflow-y-auto">{node}</div>
 		</div>
 	);
 }
