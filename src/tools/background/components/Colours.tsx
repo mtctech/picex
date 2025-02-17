@@ -2,12 +2,12 @@ import { BlockBackground } from '@/blocks/Background';
 // import Sketch from '@uiw/react-color-sketch';
 import Sketch, { ChromeInputType } from '@uiw/react-color-chrome';
 import Wheel from '@uiw/react-color-wheel';
-import { hexToRgba, rgbaToHexa } from '@uiw/color-convert';
+import { hexToRgba, HsvaColor, hsvaToHexa } from '@uiw/color-convert';
 import { useControllableValue, useLocalStorageState } from 'ahooks';
 import { Typography, Popover } from 'antd';
 import { AiFillCloseCircle } from 'react-icons/ai';
 import clsx from 'clsx';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
 const { Link, Text } = Typography;
 
@@ -27,11 +27,12 @@ function Colours({
 	const viewport = ctx.blocks[0];
 	const value = block?.fill;
 
-	const [v, setV] = useState('#fff');
+	const [hsva, setV] = useState<HsvaColor>();
+	const v = useMemo(() => (hsva ? hsvaToHexa(hsva) : 'transparent'), [hsva]);
 	const [open, setOpen] = useState(false);
 	const [hex, setHex] = useControllableValue({
 		value: typeof value === 'string' && value ? value : 'transparent',
-		onChange: (v) => {
+		onChange: (fill) => {
 			if (!viewport) {
 				return;
 			}
@@ -42,11 +43,11 @@ function Colours({
 					type: 'updateBlock',
 					block,
 					payload: {
-						fill: v,
+						fill: fill,
 					},
 				});
 			} else {
-				BlockBackground.fromColour(v, {
+				BlockBackground.fromColour(fill, {
 					width: viewport?.width,
 					height: viewport?.height,
 				}).then((newBlock) => {
@@ -100,7 +101,7 @@ function Colours({
 					content={
 						<>
 							<Sketch
-								color={/^#\w{3,6}$/.test(v) ? rgbaToHexa(hexToRgba(v)) : v}
+								color={hsva}
 								inputType={ChromeInputType.HEXA}
 								placement={null as any}
 								style={{
@@ -108,7 +109,7 @@ function Colours({
 									boxShadow: 'none',
 								}}
 								// presetColors={false}
-								onChange={(color) => setV(color.hexa)}
+								onChange={(color) => setV(color.hsva)}
 							/>
 							<div className="flex justify-end gap-4">
 								<Text
