@@ -73,15 +73,15 @@ function Colours({
 				{[
 					{ colour: 'transparent', border: '#d9d9d9' },
 					{ colour: '#fff', border: '#d9d9d9' },
-					{ colour: '#ab3638' },
-					{ colour: '#f49c46' },
-					{ colour: '#ffe629' },
-					{ colour: '#1abf0b' },
-					{ colour: '#d5ee62' },
-					{ colour: '#007aff' },
-					{ colour: '#d555dc' },
-					{ colour: '#9720d7' },
-					{ colour: '#d9d9d9' },
+					{ colour: '#ab3638', border: '#d9d9d9' },
+					{ colour: '#f49c46', border: '#d9d9d9' },
+					{ colour: '#ffe629', border: '#d9d9d9' },
+					{ colour: '#1abf0b', border: '#d9d9d9' },
+					{ colour: '#d5ee62', border: '#d9d9d9' },
+					{ colour: '#007aff', border: '#d9d9d9' },
+					{ colour: '#d555dc', border: '#d9d9d9' },
+					{ colour: '#9720d7', border: '#d9d9d9' },
+					{ colour: '#d9d9d9', border: '#d9d9d9' },
 					{ colour: '#000000' },
 				].map(({ colour, border }) => (
 					<ColourItem
@@ -155,6 +155,7 @@ function Colours({
 						key={localHex}
 						hex={hex}
 						colour={localHex}
+						border={'#d9d9d9'}
 						setHex={setHex}
 						onRemove={() => {
 							setLocalHexes((prev) =>
@@ -189,11 +190,11 @@ function ColourItem({
 			className={clsx(
 				`group relative w-[35px] h-[35px] rounded-xl cursor-pointer`,
 				{
-					'border border-solid border-[#007aff]': hex === colour,
+					'shadow-[0_0_0_1px_#007aff]': hex === colour,
 				},
 			)}
 			style={{
-				border: border && hex !== colour ? `1px solid ${border}` : undefined,
+				boxShadow: border && hex !== colour ? `0 0 0 1px ${border}` : undefined,
 				background: `url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAMUlEQVQ4T2NkYGAQYcAP3uCTZhw1gGGYhAGBZIA/nYDCgBDAm9BGDWAAJyRCgLaBCAAgXwixzAS0pgAAAABJRU5ErkJggg==)`,
 				backgroundColor:
 					colour === 'transparent' || hexToRgba(colour).a === 0
