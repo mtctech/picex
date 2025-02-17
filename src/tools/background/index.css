@@ -26,3 +26,12 @@
 		@apply dark:border-[rgba(80,80,80,0.8)];
 	}
 }
+
+.picex-scrollbar::-webkit-scrollbar {
+	width: 8px;
+}
+
+.picex-scrollbar::-webkit-scrollbar-thumb {
+	background: #c1c1c1;
+	border-radius: 100vh;
+}
