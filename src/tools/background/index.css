@@ -20,4 +20,9 @@
 			border-radius: 1rem;
 		}
 	}
+
+	hr {
+		@apply border-[rgba(226,232,240,0.8)];
+		@apply dark:border-[rgba(80,80,80,0.8)];
+	}
 }
