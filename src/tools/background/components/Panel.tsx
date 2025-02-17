@@ -53,7 +53,7 @@ function Panel({
 					onChange={setTab}
 				/>
 			</div>
-			<div className="pt-4 px-4 flex-1 min-h-0 overflow-y-auto">{node}</div>
+			<div className="pt-4 pl-4 flex-1 min-h-0 overflow-y-auto">{node}</div>
 		</div>
 	);
 }
