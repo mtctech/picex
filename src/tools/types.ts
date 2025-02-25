@@ -3,6 +3,7 @@ import { ReactNode } from 'react';
 export type IPicexToolRenderParams = {
 	ctx: IPicexContext;
 	dispatch: IPicexDispatch;
+	tool?: PicexTool;
 };
 
 export abstract class PicexTool {
@@ -10,6 +11,8 @@ export abstract class PicexTool {
 	abstract name: string;
 	abstract visible: boolean;
 	abstract disabled: boolean;
+	abstract leftStyle?: React.CSSProperties;
+	abstract rightStyle?: React.CSSProperties;
 
 	toggle(v = !this.visible) {
 		this.visible = v;
@@ -22,4 +25,6 @@ export abstract class PicexTool {
 	abstract renderIcon(params: IPicexToolRenderParams): ReactNode;
 
 	abstract renderPanel(params: IPicexToolRenderParams): ReactNode;
+
+	renderOutput?(params: IPicexToolRenderParams): ReactNode;
 }

@@ -3,12 +3,19 @@ import Icon from './icon.svg?react';
 import Panel from './components/Panel';
 import './index.css';
 import { PicexToolBackgroundProps } from './types';
+import { PicexDesign } from '@/components/Design';
+import { CSSProperties, PropsWithChildren } from 'react';
 
 export class PicexToolBackground extends PicexTool {
 	key = 'background';
 	name = 'Background';
 	visible = true;
 	disabled = false;
+	onlyOutSide = false;
+	panelChildren = null;
+	outputChildren = null;
+	leftStyle?: CSSProperties | undefined;
+	rightStyle?: CSSProperties | undefined;
 
 	constructor(protected props?: PicexToolBackgroundProps) {
 		super();
@@ -29,6 +36,24 @@ export class PicexToolBackground extends PicexTool {
 				ctx={ctx}
 				dispatch={dispatch}
 			/>
+		);
+	}
+
+	renderOutput({ ctx, dispatch, children }: any) {
+		return (
+			<PicexDesign
+				images={this.props?.images}
+				watermark={this.props?.watermark}
+				viewport={this.props?.viewport}
+				historable={this.props?.historable}
+				uploadProps={{
+					...this.props?.uploadProps,
+					multiple: this.props?.multiple,
+				}}
+				downloadProps={this.props?.downloadProps}
+			>
+				{children}
+			</PicexDesign>
 		);
 	}
 }

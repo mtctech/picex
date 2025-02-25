@@ -6,13 +6,14 @@ import './ToolBar.css';
 
 export interface PicexToolBarProps {
 	tools: PicexTool[];
+	onChange?: (key: string) => void;
 }
 
 /**
  * 左侧工具栏
  * @description 根据配置初始化并渲染工具栏
  */
-export function PicexToolBar({ tools }: PicexToolBarProps) {
+export function PicexToolBar({ tools, onChange }: PicexToolBarProps) {
 	const ctx = usePicexCtx();
 	const dispatch = usePicexDispatch();
 
@@ -22,6 +23,7 @@ export function PicexToolBar({ tools }: PicexToolBarProps) {
 			type="card"
 			tabPosition="left"
 			className="picex-toolbar w-full h-full"
+			onChange={onChange}
 			items={tools.map((tool) => {
 				return {
 					key: tool.key,
@@ -38,6 +40,7 @@ export function PicexToolBar({ tools }: PicexToolBarProps) {
 							{tool.renderPanel?.({ ctx, dispatch })}
 						</div>
 					),
+					disabled: tool.disabled,
 				};
 			})}
 		/>
