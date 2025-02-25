@@ -5,18 +5,27 @@ import { useResponsive } from 'ahooks';
 import { PicexTool } from '../tools/types';
 import { usePicexCtx, usePicexDispatch } from '../core/context';
 import './ToolBar.css';
+import { cn } from '@/utils/cn';
 
 export interface PicexToolBarProps {
 	tools: PicexTool[];
 	value?: null | string;
 	onChange?: (key: string) => void;
+	style?: React.CSSProperties;
+	className?: string;
 }
 
 /**
  * 左侧工具栏
  * @description 根据配置初始化并渲染工具栏
  */
-export function PicexToolBar({ tools, value, onChange }: PicexToolBarProps) {
+export function PicexToolBar({
+	tools,
+	value,
+	onChange,
+	style,
+	className,
+}: PicexToolBarProps) {
 	const ctx = usePicexCtx();
 	const dispatch = usePicexDispatch();
 	const sizes = useResponsive();
@@ -40,7 +49,8 @@ export function PicexToolBar({ tools, value, onChange }: PicexToolBarProps) {
 			size="small"
 			type="card"
 			tabPosition={sizes.lg ? 'left' : 'top'}
-			className="picex-toolbar w-full h-full"
+			style={style}
+			className={cn('picex-toolbar w-full h-full', className)}
 			onChange={onToolChange}
 			items={tools.map((tool) => {
 				return {

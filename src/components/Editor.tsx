@@ -16,22 +16,26 @@ export function PicexEditor({
 	tools = [new PicexToolBackground()],
 	left,
 	right,
-	leftStyle,
-	rightStyle,
 	initialSelectedTool,
 	children,
 }: PropsWithChildren<{
 	tools?: PicexTool[];
 	initialSelectedTool?: string;
-	left?: PropsWithChildren<{}>;
-	right?: PropsWithChildren<{}>;
-	leftStyle?: React.CSSProperties;
-	rightStyle?: React.CSSProperties;
+	left?: PropsWithChildren<{
+		style?: React.CSSProperties;
+		className?: string;
+	}>;
+	right?: PropsWithChildren<{
+		style?: React.CSSProperties;
+		className?: string;
+	}>;
 }>) {
 	const [state, dispatch] = useReducer(reducer, DefaultPicexContext);
 	const [selectedTool, setSelectedTool] = useState<string | null>(
 		initialSelectedTool || tools[0]?.key || null,
 	);
+	const { children: leftChildren, ...leftProps } = left ?? {};
+	const { children: rightChildren, ...rightProps } = right ?? {};
 
 	return (
 		<PicexContext.Provider value={state}>
@@ -40,18 +44,19 @@ export function PicexEditor({
 					left={
 						<>
 							<PicexToolBar
+								{...leftProps}
 								tools={tools}
 								value={selectedTool}
 								onChange={(key: string) => setSelectedTool(key)}
 							/>
-							{left?.children}
+							{leftChildren}
 						</>
 					}
 					right={
 						<>
 							<PicexProperties />
 							<PicexBlockTree />
-							{right?.children}
+							{rightChildren}
 						</>
 					}
 					selectedTool={
