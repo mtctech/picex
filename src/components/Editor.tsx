@@ -13,7 +13,7 @@ import {
 import { reducer } from '@/core/reducer';
 
 export function PicexEditor({
-	tools = [new PicexToolImageToImage(), new PicexToolBackground()],
+	tools = [new PicexToolBackground()],
 	left,
 	right,
 	leftStyle,
@@ -41,6 +41,7 @@ export function PicexEditor({
 						<>
 							<PicexToolBar
 								tools={tools}
+								value={selectedTool}
 								onChange={(key: string) => setSelectedTool(key)}
 							/>
 							{left?.children}

@@ -4,6 +4,15 @@ import { PicexEditor } from '../src';
 
 import './index.css';
 import { App, ConfigProvider } from 'antd';
+import { configResponsive } from 'ahooks';
+
+configResponsive({
+	xs: 0,
+	sm: 640,
+	md: 768,
+	lg: 1024,
+	xl: 1280,
+});
 
 function Editor() {
 	const [images, setImages] = React.useState<any>(undefined);
@@ -25,13 +34,13 @@ function Editor() {
 			// 		height: 2580,
 			// 	},
 			// ]}
-			left={{
-				children: (
-					<div className="z-10 absolute left-full ml-4 top-4">
-						<button onClick={() => setImages([])}>Clear</button>
-					</div>
-				),
-			}}
+			// left={{
+			// 	children: (
+			// 		<div className="z-10 absolute left-full ml-4 top-4">
+			// 			<button onClick={() => setImages([])}>Clear</button>
+			// 		</div>
+			// 	),
+			// }}
 			uploadProps={{
 				err: <span>Test</span>,
 				hidden: true,

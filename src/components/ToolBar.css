@@ -1,14 +1,17 @@
 .picex-toolbar.ant-tabs {
 	.ant-tabs-nav {
 		border: 0;
-
+		
+		@apply mb-0;
 		@apply border-r border-solid;
 		@apply border-[rgba(226,232,240,0.8)];
 		@apply dark:border-[rgba(80,80,80,0.8)];
 
 		.ant-tabs-tab {
+			@apply py-[18px] px-[14px] md:pl-0;
+
 			border: 0;
-			padding: 18px 14px 18px 0;
+			outline: 0;
 		}
 		.ant-tabs-tab-active {
 			@apply dark:bg-transparent;

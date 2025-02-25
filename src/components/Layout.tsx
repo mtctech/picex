@@ -16,9 +16,9 @@ export default function PicexLayout({
 	selectedTool?: PicexTool;
 }>) {
 	return (
-		<section className="picex flex h-full">
+		<section className="picex flex flex-col md:flex-row w-full h-full">
 			<div
-				className="relative w-1/3 max-w-[396px]"
+				className="relative md:w-1/3 md:max-w-[396px]"
 				style={{
 					...leftStyle,
 					...selectedTool?.leftStyle,
@@ -30,7 +30,7 @@ export default function PicexLayout({
 				{children}
 			</div>
 			<div
-				className="relative max-w-1/5 flex-[0_1_0]"
+				className="relative md:max-w-1/5 flex-[0_1_0]"
 				style={{
 					...rightStyle,
 					...selectedTool?.rightStyle,

@@ -30,7 +30,7 @@ export function Operators({
 	return (
 		<aside
 			className={cn(
-				'absolute top-8 right-8 flex items-center justify-end gap-2',
+				'absolute top-4 right-4 lg:top-8 lg:right-8 flex items-center justify-end gap-2',
 				className,
 			)}
 		>

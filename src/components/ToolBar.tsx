@@ -1,11 +1,14 @@
-import { Tabs } from 'antd';
-import React from 'react';
+import { Drawer, Tabs } from 'antd';
+import { AiOutlineMenuUnfold } from 'react-icons/ai';
+import React, { useCallback, useState } from 'react';
+import { useResponsive } from 'ahooks';
 import { PicexTool } from '../tools/types';
 import { usePicexCtx, usePicexDispatch } from '../core/context';
 import './ToolBar.css';
 
 export interface PicexToolBarProps {
 	tools: PicexTool[];
+	value?: null | string;
 	onChange?: (key: string) => void;
 }
 
@@ -13,17 +16,32 @@ export interface PicexToolBarProps {
  * 左侧工具栏
  * @description 根据配置初始化并渲染工具栏
  */
-export function PicexToolBar({ tools, onChange }: PicexToolBarProps) {
+export function PicexToolBar({ tools, value, onChange }: PicexToolBarProps) {
 	const ctx = usePicexCtx();
 	const dispatch = usePicexDispatch();
+	const sizes = useResponsive();
+	const [flags, setFlags] = useState<Record<string, boolean>>({});
+
+	const onToolChange = useCallback(
+		(v: string) => {
+			onChange?.(v);
+			setFlags((prev) => {
+				return {
+					...prev,
+					[v]: true,
+				};
+			});
+		},
+		[onChange],
+	);
 
 	return (
 		<Tabs
 			size="small"
 			type="card"
-			tabPosition="left"
+			tabPosition={sizes.lg ? 'left' : 'top'}
 			className="picex-toolbar w-full h-full"
-			onChange={onChange}
+			onChange={onToolChange}
 			items={tools.map((tool) => {
 				return {
 					key: tool.key,
@@ -35,10 +53,37 @@ export function PicexToolBar({ tools, onChange }: PicexToolBarProps) {
 							<span className="text-sm leading-[1]">{tool.name}</span>
 						</span>
 					),
-					children: (
+					children: sizes.lg ? (
 						<div className="pt-5 overflow-y-auto h-full">
 							{tool.renderPanel?.({ ctx, dispatch })}
 						</div>
+					) : (
+						<>
+							<aside className="absolute z-10 left-0 top-full mt-4 ml-4">
+								<span
+									className="text-2xl text-[#666] hover:text-[#007AFF]"
+									onClick={() =>
+										value && setFlags((prev) => ({ ...prev, [value]: true }))
+									}
+								>
+									<AiOutlineMenuUnfold />
+								</span>
+							</aside>
+							<Drawer
+								placement="left"
+								width="67vw"
+								styles={{
+									header: { padding: 8 },
+									body: { padding: 8 },
+								}}
+								open={flags[tool.key]}
+								onClose={() =>
+									setFlags((prev) => ({ ...prev, [tool.key]: false }))
+								}
+							>
+								{tool.renderPanel?.({ ctx, dispatch })}
+							</Drawer>
+						</>
 					),
 					disabled: tool.disabled,
 				};
