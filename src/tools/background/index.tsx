@@ -11,9 +11,6 @@ export class PicexToolBackground extends PicexTool {
 	name = 'Background';
 	visible = true;
 	disabled = false;
-	onlyOutSide = false;
-	panelChildren = null;
-	outputChildren = null;
 	leftStyle?: CSSProperties | undefined;
 	rightStyle?: CSSProperties | undefined;
 

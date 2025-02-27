@@ -23,6 +23,8 @@ export interface DesignProps {
 	historable?: boolean;
 	uploadProps?: UploadBoxProps;
 	downloadProps?: DownloadProps;
+	enableOperators?: boolean;
+	onlyChildren?: boolean;
 }
 
 /**
@@ -40,6 +42,8 @@ export function PicexDesign({
 	uploadProps,
 	downloadProps,
 	children,
+	enableOperators = true,
+	onlyChildren = false,
 }: PropsWithChildren<DesignProps>) {
 	const { blocks } = usePicexCtx();
 	const dispatch = usePicexDispatch();
@@ -92,15 +96,21 @@ export function PicexDesign({
 	]);
 	useWaterMark(watermark);
 
+	if (onlyChildren) {
+		return <div className="picex-design h-full">{children}</div>;
+	}
+
 	return (
 		<div className="picex-design h-full">
-			<Operators
-				className="z-10"
-				blocks={blocks}
-				uploadProps={uploadProps}
-				downloadProps={downloadProps}
-				onChange={onChange}
-			/>
+			{enableOperators ? (
+				<Operators
+					className="z-10"
+					blocks={blocks}
+					uploadProps={uploadProps}
+					downloadProps={downloadProps}
+					onChange={onChange}
+				/>
+			) : null}
 			{historable ? <HistoryBtns /> : null}
 			<div
 				// ref={el}

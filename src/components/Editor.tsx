@@ -4,7 +4,7 @@ import { PicexToolBar } from './ToolBar';
 import { DesignProps, PicexDesign } from './Design';
 import { PicexProperties } from './Properties';
 import { PicexBlockTree } from './BlockTree';
-import { PicexTool, PicexToolBackground, PicexToolImageToImage } from '@/tools';
+import { PicexTool, PicexToolBackground, PicexToolCustom } from '@/tools';
 import {
 	DefaultPicexContext,
 	PicexContext,
@@ -14,22 +14,36 @@ import { reducer } from '@/core/reducer';
 
 export function PicexEditor({
 	tools = [new PicexToolBackground()],
+	initialSelectedTool,
+	activeToolKey,
+	multiple = false,
+	historable = true,
+	images,
+	watermark,
+	viewport,
+	children,
 	left,
 	right,
-	initialSelectedTool,
-	children,
-}: PropsWithChildren<{
-	tools?: PicexTool[];
-	initialSelectedTool?: string;
-	left?: PropsWithChildren<{
-		style?: React.CSSProperties;
-		className?: string;
-	}>;
-	right?: PropsWithChildren<{
-		style?: React.CSSProperties;
-		className?: string;
-	}>;
-}>) {
+	uploadProps,
+	downloadProps,
+	onlyChildren = false,
+	onToolChange,
+}: DesignProps &
+	PropsWithChildren<{
+		tools?: PicexTool[];
+		multiple?: boolean;
+		initialSelectedTool?: string;
+		activeToolKey?: string;
+		onToolChange?: (key: string) => void;
+		left?: PropsWithChildren<{
+			style?: React.CSSProperties;
+			className?: string;
+		}>;
+		right?: PropsWithChildren<{
+			style?: React.CSSProperties;
+			className?: string;
+		}>;
+	}>) {
 	const [state, dispatch] = useReducer(reducer, DefaultPicexContext);
 	const [selectedTool, setSelectedTool] = useState<string | null>(
 		initialSelectedTool || tools[0]?.key || null,
@@ -47,7 +61,11 @@ export function PicexEditor({
 								{...leftProps}
 								tools={tools}
 								value={selectedTool}
-								onChange={(key: string) => setSelectedTool(key)}
+								activeToolKey={activeToolKey}
+								onChange={(key: string) => {
+									setSelectedTool(key);
+									onToolChange?.(key);
+								}}
 							/>
 							{leftChildren}
 						</>
@@ -65,10 +83,20 @@ export function PicexEditor({
 							: undefined
 					}
 				>
-					{selectedTool &&
-						tools
-							.find((tool) => tool.key === selectedTool)
-							?.renderOutput?.({ ctx: state, dispatch })}
+					<PicexDesign
+						onlyChildren={onlyChildren}
+						images={images}
+						watermark={watermark}
+						viewport={viewport}
+						historable={historable}
+						uploadProps={{
+							...uploadProps,
+							multiple,
+						}}
+						downloadProps={downloadProps}
+					>
+						{children}
+					</PicexDesign>
 				</PicexLayout>
 			</PicexDispatchContext.Provider>
 		</PicexContext.Provider>

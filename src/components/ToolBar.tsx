@@ -13,6 +13,7 @@ export interface PicexToolBarProps {
 	onChange?: (key: string) => void;
 	style?: React.CSSProperties;
 	className?: string;
+	activeToolKey?: string;
 }
 
 /**
@@ -22,6 +23,7 @@ export interface PicexToolBarProps {
 export function PicexToolBar({
 	tools,
 	value,
+	activeToolKey,
 	onChange,
 	style,
 	className,
@@ -52,19 +54,25 @@ export function PicexToolBar({
 			style={style}
 			className={cn('picex-toolbar w-full h-full', className)}
 			onChange={onToolChange}
+			activeKey={activeToolKey}
 			items={tools.map((tool) => {
 				return {
 					key: tool.key,
 					label: (
 						<span className="max-w-12 inline-flex flex-col items-center gap-1">
-							<i className="w-12 h-12 rounded-full bg-[rgb(31,135,252,0.1)]  overflow-hidden flex items-center justify-center">
+							<i
+								className={cn(
+									'w-12 h-12 rounded-full   overflow-hidden flex items-center justify-center',
+									activeToolKey === tool.key && 'bg-[rgb(31,135,252,0.1)]',
+								)}
+							>
 								{tool.renderIcon?.({ ctx, dispatch })}
 							</i>
 							<span className="text-sm leading-[1]">{tool.name}</span>
 						</span>
 					),
 					children: sizes.lg ? (
-						<div className="pt-5 overflow-y-auto h-full">
+						<div className="pt-5 pb-4 overflow-y-auto h-full">
 							{tool.renderPanel?.({ ctx, dispatch })}
 						</div>
 					) : (
