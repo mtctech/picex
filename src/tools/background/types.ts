@@ -1,7 +1,8 @@
 import { UploadBoxProps } from '@/components/common/UploadBox';
-
-export type PicexToolBackgroundProps = UploadBoxProps & {
-	name?: string;
-	maxColours?: number;
-	maxImages?: number;
-};
+import { DesignProps } from '@/components/Design';
+export type PicexToolBackgroundProps = DesignProps &
+	UploadBoxProps & {
+		name?: string;
+		maxColours?: number;
+		maxImages?: number;
+	};

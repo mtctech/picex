@@ -1,10 +1,10 @@
-import React, { PropsWithChildren, useReducer } from 'react';
+import React, { PropsWithChildren, useReducer, useState } from 'react';
 import PicexLayout from './Layout';
 import { PicexToolBar } from './ToolBar';
 import { DesignProps, PicexDesign } from './Design';
 import { PicexProperties } from './Properties';
 import { PicexBlockTree } from './BlockTree';
-import { PicexTool, PicexToolBackground } from '../tools';
+import { PicexTool, PicexToolBackground, PicexToolCustom } from '@/tools';
 import {
 	DefaultPicexContext,
 	PicexContext,
@@ -14,6 +14,8 @@ import { reducer } from '@/core/reducer';
 
 export function PicexEditor({
 	tools = [new PicexToolBackground()],
+	initialSelectedTool,
+	activeToolKey,
 	multiple = false,
 	historable = true,
 	images,
@@ -24,15 +26,30 @@ export function PicexEditor({
 	right,
 	uploadProps,
 	downloadProps,
-}: PropsWithChildren<
-	DesignProps & {
+	onlyChildren = false,
+	onToolChange,
+}: DesignProps &
+	PropsWithChildren<{
 		tools?: PicexTool[];
 		multiple?: boolean;
-		left?: PropsWithChildren<{}>;
-		right?: PropsWithChildren<{}>;
-	}
->) {
+		initialSelectedTool?: string;
+		activeToolKey?: string;
+		onToolChange?: (key: string) => void;
+		left?: PropsWithChildren<{
+			style?: React.CSSProperties;
+			className?: string;
+		}>;
+		right?: PropsWithChildren<{
+			style?: React.CSSProperties;
+			className?: string;
+		}>;
+	}>) {
 	const [state, dispatch] = useReducer(reducer, DefaultPicexContext);
+	const [selectedTool, setSelectedTool] = useState<string | null>(
+		initialSelectedTool || tools[0]?.key || null,
+	);
+	const { children: leftChildren, ...leftProps } = left ?? {};
+	const { children: rightChildren, ...rightProps } = right ?? {};
 
 	return (
 		<PicexContext.Provider value={state}>
@@ -40,19 +57,34 @@ export function PicexEditor({
 				<PicexLayout
 					left={
 						<>
-							<PicexToolBar tools={tools} />
-							{left?.children}
+							<PicexToolBar
+								{...leftProps}
+								tools={tools}
+								value={selectedTool}
+								activeToolKey={activeToolKey}
+								onChange={(key: string) => {
+									setSelectedTool(key);
+									onToolChange?.(key);
+								}}
+							/>
+							{leftChildren}
 						</>
 					}
 					right={
 						<>
 							<PicexProperties />
 							<PicexBlockTree />
-							{right?.children}
+							{rightChildren}
 						</>
+					}
+					selectedTool={
+						selectedTool
+							? tools.find((tool) => tool.key === selectedTool)
+							: undefined
 					}
 				>
 					<PicexDesign
+						onlyChildren={onlyChildren}
 						images={images}
 						watermark={watermark}
 						viewport={viewport}
