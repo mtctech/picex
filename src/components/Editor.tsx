@@ -13,7 +13,7 @@ import {
 import { reducer } from '@/core/reducer';
 
 export function PicexEditor({
-	tools = [new PicexToolBackground()],
+	tools = [new PicexToolBackground(), new PicexToolCustom()],
 	initialSelectedTool,
 	activeToolKey,
 	multiple = false,
