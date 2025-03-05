@@ -11,8 +11,8 @@ export abstract class PicexTool {
 	abstract name: string;
 	abstract visible: boolean;
 	abstract disabled: boolean;
-	abstract leftStyle?: React.CSSProperties;
-	abstract rightStyle?: React.CSSProperties;
+	abstract leftStyle?: React.CSSProperties & { className?: string };
+	abstract rightStyle?: React.CSSProperties & { className?: string };
 
 	toggle(v = !this.visible) {
 		this.visible = v;
