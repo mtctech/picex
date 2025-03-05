@@ -62,17 +62,26 @@ export function PicexToolBar({
 						<span className="max-w-12 inline-flex flex-col items-center gap-1">
 							<i
 								className={cn(
-									'w-12 h-12 rounded-full   overflow-hidden flex items-center justify-center',
-									activeToolKey === tool.key && 'bg-[rgb(31,135,252,0.1)]',
+									'w-12 h-12 rounded-full overflow-hidden flex items-center justify-center',
+									activeToolKey === tool.key
+										? 'bg-[rgb(31,135,252,0.1)]'
+										: 'bg-[#d9d9d9] text-[#666666]',
 								)}
 							>
 								{tool.renderIcon?.({ ctx, dispatch })}
 							</i>
-							<span className="text-sm leading-[1]">{tool.name}</span>
+							<span
+								className={cn(
+									'text-sm leading-[1] font-medium',
+									activeToolKey !== tool.key && 'text-[#666666]',
+								)}
+							>
+								{tool.name}
+							</span>
 						</span>
 					),
 					children: sizes.lg ? (
-						<div className="pt-5 pb-4 overflow-y-auto h-full">
+						<div className="pb-4 overflow-y-auto h-full">
 							{tool.renderPanel?.({ ctx, dispatch })}
 						</div>
 					) : (
