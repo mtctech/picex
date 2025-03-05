@@ -16,17 +16,21 @@ configResponsive({
 
 function Editor() {
 	const [images, setImages] = React.useState<any>(undefined);
+	const [activeToolKey, setActiveToolKey] =
+		React.useState<string>('background');
 
 	return (
 		<PicexEditor
 			watermark={{
 				value: 'Picex',
 			}}
+			activeToolKey={activeToolKey}
 			// viewport={{
 			// 	width: 920,
 			// 	height: 613,
 			// }}
 			images={images}
+			onToolChange={(key) => setActiveToolKey(key)}
 			// images={[
 			// 	{
 			// 		url: 'https://plus.unsplash.com/premium_photo-1730828573449-a4efc34e3644?q=80&w=3870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
