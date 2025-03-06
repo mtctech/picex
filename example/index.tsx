@@ -25,10 +25,6 @@ function Editor() {
 				value: 'Picex',
 			}}
 			activeToolKey={activeToolKey}
-			// viewport={{
-			// 	width: 920,
-			// 	height: 613,
-			// }}
 			images={images}
 			onToolChange={(key) => setActiveToolKey(key)}
 			// images={[
