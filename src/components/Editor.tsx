@@ -47,6 +47,10 @@ export function PicexEditor({
 		layout?: {
 			leftStyle?: React.CSSProperties;
 			rightStyle?: React.CSSProperties;
+			contentStyle?: React.CSSProperties;
+			leftClassName?: string;
+			rightClassName?: string;
+			contentClassName?: string;
 		};
 	}>) {
 	const [state, dispatch] = useReducer(reducer, DefaultPicexContext);
