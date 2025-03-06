@@ -4,7 +4,7 @@ import { PicexToolBar } from './ToolBar';
 import { DesignProps, PicexDesign } from './Design';
 import { PicexProperties } from './Properties';
 import { PicexBlockTree } from './BlockTree';
-import { PicexTool, PicexToolBackground, PicexToolCustom } from '@/tools';
+import { PicexTool, PicexToolBackground } from '@/tools';
 import {
 	DefaultPicexContext,
 	PicexContext,
@@ -13,7 +13,7 @@ import {
 import { reducer } from '@/core/reducer';
 
 export function PicexEditor({
-	tools = [new PicexToolBackground(), new PicexToolCustom()],
+	tools = [new PicexToolBackground()],
 	initialSelectedTool,
 	activeToolKey,
 	multiple = false,
@@ -24,6 +24,7 @@ export function PicexEditor({
 	children,
 	left,
 	right,
+	layout,
 	uploadProps,
 	downloadProps,
 	onlyChildren = false,
@@ -43,6 +44,10 @@ export function PicexEditor({
 			style?: React.CSSProperties;
 			className?: string;
 		}>;
+		layout?: {
+			leftStyle?: React.CSSProperties;
+			rightStyle?: React.CSSProperties;
+		};
 	}>) {
 	const [state, dispatch] = useReducer(reducer, DefaultPicexContext);
 	const [selectedTool, setSelectedTool] = useState<string | null>(
@@ -82,6 +87,7 @@ export function PicexEditor({
 							? tools.find((tool) => tool.key === selectedTool)
 							: undefined
 					}
+					{...layout}
 				>
 					<PicexDesign
 						onlyChildren={onlyChildren}
