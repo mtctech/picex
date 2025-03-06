@@ -11,22 +11,16 @@ export default function PicexLayout({
 	selectedTool,
 }: PropsWithChildren<{
 	left: ReactNode;
-	leftStyle?: React.CSSProperties & { className?: string };
-	rightStyle?: React.CSSProperties & { className?: string };
 	right: ReactNode;
+	leftStyle?: React.CSSProperties;
+	rightStyle?: React.CSSProperties;
 	selectedTool?: PicexTool;
 }>) {
 	return (
 		<section className="picex flex flex-col md:flex-row w-full h-full">
 			<div
-				className={cn(
-					'relative md:w-1/3 md:max-w-[396px]',
-					selectedTool?.leftStyle?.className,
-				)}
-				style={{
-					...leftStyle,
-					...selectedTool?.leftStyle,
-				}}
+				className={cn('relative md:w-1/3 md:max-w-[396px]')}
+				style={leftStyle}
 			>
 				{left}
 			</div>
@@ -34,14 +28,8 @@ export default function PicexLayout({
 				{children}
 			</div>
 			<div
-				className={cn(
-					'relative md:max-w-1/5 flex-[0_1_0]',
-					selectedTool?.rightStyle?.className,
-				)}
-				style={{
-					...rightStyle,
-					...selectedTool?.rightStyle,
-				}}
+				className={cn('relative md:max-w-1/5 flex-[0_1_0]')}
+				style={rightStyle}
 			>
 				{right}
 			</div>
