@@ -35,22 +35,4 @@ export class PicexToolBackground extends PicexTool {
 			/>
 		);
 	}
-
-	renderOutput({ ctx, dispatch, children }: any) {
-		return (
-			<PicexDesign
-				images={this.props?.images}
-				watermark={this.props?.watermark}
-				viewport={this.props?.viewport}
-				historable={this.props?.historable}
-				uploadProps={{
-					...this.props?.uploadProps,
-					multiple: this.props?.multiple,
-				}}
-				downloadProps={this.props?.downloadProps}
-			>
-				{children}
-			</PicexDesign>
-		);
-	}
 }
