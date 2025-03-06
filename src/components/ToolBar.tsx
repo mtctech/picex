@@ -81,9 +81,7 @@ export function PicexToolBar({
 						</span>
 					),
 					children: sizes.lg ? (
-						<div className="pb-4 overflow-y-auto h-full">
-							{tool.renderPanel?.({ ctx, dispatch })}
-						</div>
+						tool.renderPanel?.({ ctx, dispatch })
 					) : (
 						<>
 							<aside className="absolute z-10 left-0 top-full mt-4 ml-4">

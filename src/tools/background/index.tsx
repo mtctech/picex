@@ -18,6 +18,7 @@ export class PicexToolBackground extends PicexTool {
 		super();
 
 		this.name = props?.name || this.name;
+		this.disabled = props?.disabled || this.disabled;
 	}
 
 	renderIcon() {

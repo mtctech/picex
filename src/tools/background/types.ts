@@ -5,5 +5,4 @@ export type PicexToolBackgroundProps = DesignProps &
 		name?: string;
 		maxColours?: number;
 		maxImages?: number;
-		disabled?: boolean;
 	};
