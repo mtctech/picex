@@ -96,43 +96,44 @@ export function PicexDesign({
 	]);
 	useWaterMark(watermark);
 
-	if (onlyChildren) {
-		return <div className="picex-design h-full">{children}</div>;
-	}
-
 	return (
 		<div className="picex-design h-full">
-			{enableOperators ? (
-				<Operators
-					className="z-10"
-					blocks={blocks}
-					uploadProps={uploadProps}
-					downloadProps={downloadProps}
-					onChange={onChange}
-				/>
-			) : null}
-			{historable ? <HistoryBtns /> : null}
-			<div
-				// ref={el}
-				className="picex-design-content h-full flex items-center justify-center"
-			>
-				{!blocks.length ? (
-					<div
-						className={cn('w-full text-center max-w-[422px] aspect-[422/553]')}
-					>
-						{children ?? (
-							<UploadBox
-								accept="image/*"
-								multiple={false}
-								{...uploadProps}
-								onChange={onChange}
-							/>
-						)}
-					</div>
-				) : (
-					<PicexCanvas />
-				)}
+			<div className={cn('h-full', { hidden: onlyChildren })}>
+				{enableOperators ? (
+					<Operators
+						className="z-10"
+						blocks={blocks}
+						uploadProps={uploadProps}
+						downloadProps={downloadProps}
+						onChange={onChange}
+					/>
+				) : null}
+				{historable ? <HistoryBtns /> : null}
+				<div
+					// ref={el}
+					className="picex-design-content h-full flex items-center justify-center"
+				>
+					{!blocks.length ? (
+						<div
+							className={cn(
+								'w-full text-center max-w-[422px] aspect-[422/553]',
+							)}
+						>
+							{children ?? (
+								<UploadBox
+									accept="image/*"
+									multiple={false}
+									{...uploadProps}
+									onChange={onChange}
+								/>
+							)}
+						</div>
+					) : (
+						<PicexCanvas />
+					)}
+				</div>
 			</div>
+			<div className={cn('h-full', { hidden: !onlyChildren })}>{children}</div>
 		</div>
 	);
 }
