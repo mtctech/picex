@@ -13,8 +13,6 @@ import {
 import { HistoryBtns } from './common/HistoryBtns';
 
 import './Design.css';
-import { getScaledFitSize } from '@/utils/scale';
-
 export interface DesignProps {
 	viewport?: Size;
 	maxport?: Size;
@@ -96,6 +94,15 @@ export function PicexDesign({
 	]);
 	useWaterMark(watermark);
 
+	const Box = (
+		<UploadBox
+			accept="image/*"
+			multiple={false}
+			{...uploadProps}
+			onChange={onChange}
+		/>
+	);
+
 	return (
 		<div className="picex-design h-full">
 			<div className={cn('h-full', { hidden: onlyChildren })}>
@@ -119,14 +126,7 @@ export function PicexDesign({
 								'w-full text-center max-w-[422px] aspect-[422/553]',
 							)}
 						>
-							{children ?? (
-								<UploadBox
-									accept="image/*"
-									multiple={false}
-									{...uploadProps}
-									onChange={onChange}
-								/>
-							)}
+							{onlyChildren ? Box : (children ?? Box)}
 						</div>
 					) : (
 						<PicexCanvas />
