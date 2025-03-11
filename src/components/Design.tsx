@@ -22,6 +22,7 @@ export interface DesignProps {
 	uploadProps?: UploadBoxProps;
 	downloadProps?: DownloadProps;
 	enableOperators?: boolean;
+	childrenZeroBlock?: React.ReactNode;
 	onlyChildren?: boolean;
 }
 
@@ -40,6 +41,7 @@ export function PicexDesign({
 	uploadProps,
 	downloadProps,
 	children,
+	childrenZeroBlock,
 	enableOperators = true,
 	onlyChildren = false,
 }: PropsWithChildren<DesignProps>) {
@@ -94,7 +96,9 @@ export function PicexDesign({
 	]);
 	useWaterMark(watermark);
 
-	const Box = (
+	const Box = (onlyChildren
+		? childrenZeroBlock
+		: (childrenZeroBlock ?? children)) ?? (
 		<UploadBox
 			accept="image/*"
 			multiple={false}
@@ -126,7 +130,7 @@ export function PicexDesign({
 								'w-full text-center max-w-[422px] aspect-[422/553]',
 							)}
 						>
-							{onlyChildren ? Box : (children ?? Box)}
+							{Box}
 						</div>
 					) : (
 						<PicexCanvas />
