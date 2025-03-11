@@ -22,6 +22,7 @@ export function PicexEditor({
 	watermark,
 	viewport,
 	children,
+	childrenZeroBlock,
 	left,
 	right,
 	layout,
@@ -95,6 +96,7 @@ export function PicexEditor({
 				>
 					<PicexDesign
 						onlyChildren={onlyChildren}
+						childrenZeroBlock={childrenZeroBlock}
 						images={images}
 						watermark={watermark}
 						viewport={viewport}
