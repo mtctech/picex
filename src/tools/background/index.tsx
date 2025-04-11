@@ -5,10 +5,11 @@ import './index.css';
 import { PicexToolBackgroundProps } from './types';
 import { PicexDesign } from '@/components/Design';
 import { CSSProperties, PropsWithChildren } from 'react';
+import locale from '@/locale';
 
 export class PicexToolBackground extends PicexTool {
 	key = 'background';
-	name = 'Background';
+	name = locale.t('background.title');
 	visible = true;
 	disabled = false;
 	leftStyle?: CSSProperties | undefined;

@@ -24,6 +24,7 @@ function Editor() {
 			watermark={{
 				value: 'Picex',
 			}}
+			lang="ja"
 			activeToolKey={activeToolKey}
 			images={images}
 			onToolChange={(key) => setActiveToolKey(key)}

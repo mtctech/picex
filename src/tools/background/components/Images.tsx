@@ -8,6 +8,7 @@ import { Upload, UploadProps } from 'antd';
 import { uploadFileByBase64 } from '@/utils/image';
 import { cn } from '@/utils/cn';
 import { BlockBackground } from '@/blocks/Background';
+import locale from '@/locale';
 
 function Images({
 	maxImages,
@@ -104,7 +105,9 @@ function Images({
 							>
 								<AiOutlineUpload />
 							</span>
-							<span className={'text-sm font-medium'}>Upload</span>
+							<span className={'text-sm font-medium'}>
+								{locale.t('background.panel.upload')}
+							</span>
 						</div>
 					</Upload>
 				</li>

@@ -8,7 +8,7 @@ import { Typography, Popover } from 'antd';
 import { AiFillCloseCircle } from 'react-icons/ai';
 import clsx from 'clsx';
 import React, { useMemo, useState } from 'react';
-
+import locale from '@/locale';
 const { Link, Text } = Typography;
 
 function Colours({
@@ -130,7 +130,7 @@ function Colours({
 										setOpen(false);
 									}}
 								>
-									Confirm
+									{locale.t('background.panel.confirm')}
 								</Link>
 							</div>
 						</>

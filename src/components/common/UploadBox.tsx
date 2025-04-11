@@ -5,6 +5,7 @@ import { FiPlusCircle } from 'react-icons/fi';
 import { useRequest } from 'ahooks';
 import { cn } from '../../utils/cn';
 import { uploadFileByBase64 } from '@/utils/image';
+import locale from '@/locale';
 
 const { Text } = Typography;
 
@@ -98,7 +99,7 @@ export function UploadBox({
 								{icon ?? <FiPlusCircle />}
 							</p>
 							<p className={cn('text-lg font-medium', wordingsClassName)}>
-								{wordings ?? 'Upload your image here'}
+								{wordings ?? locale.t('uploadTip')}
 							</p>
 						</div>
 					)}

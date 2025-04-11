@@ -11,6 +11,7 @@ import {
 	PicexDispatchContext,
 } from '@/core/context';
 import { reducer } from '@/core/reducer';
+import locale from '@/locale';
 
 export function PicexEditor({
 	tools = [new PicexToolBackground()],
@@ -30,8 +31,10 @@ export function PicexEditor({
 	downloadProps,
 	onlyChildren = false,
 	onToolChange,
+	lang = 'en',
 }: DesignProps &
 	PropsWithChildren<{
+		lang?: string;
 		tools?: PicexTool[];
 		multiple?: boolean;
 		initialSelectedTool?: string;
@@ -60,6 +63,8 @@ export function PicexEditor({
 	);
 	const { children: leftChildren, ...leftProps } = left ?? {};
 	const { children: rightChildren, ...rightProps } = right ?? {};
+
+	locale.use(lang);
 
 	return (
 		<PicexContext.Provider value={state}>

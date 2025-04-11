@@ -4,6 +4,7 @@ import { Block } from '@/index';
 import { useDownload } from '@/hooks/useDownload';
 import { cn } from '@/utils/cn';
 import { ImageFormat } from 'fabric';
+import locale from '@/locale';
 
 export type DownloadProps = {
 	format?: ImageFormat;
@@ -49,7 +50,7 @@ export function Operators({
 								shape="round"
 								loading={loading}
 							>
-								Upload a new image
+								{locale.t('uploadNewImage')}
 							</Button>
 						);
 						return !error ? (
@@ -75,7 +76,7 @@ export function Operators({
 				loading={downloading}
 				onClick={() => download(format, filename)}
 			>
-				Download
+				{locale.t('download')}
 			</Button>
 		</aside>
 	);

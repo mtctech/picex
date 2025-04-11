@@ -24,6 +24,7 @@ export interface DesignProps {
 	enableOperators?: boolean;
 	childrenZeroBlock?: React.ReactNode;
 	onlyChildren?: boolean;
+	lang?: string;
 }
 
 /**
