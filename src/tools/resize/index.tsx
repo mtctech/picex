@@ -1,9 +1,6 @@
-import { CSSProperties, ReactNode } from 'react';
 import { PicexTool } from '../types';
 
 export class PicexToolResize extends PicexTool {
-	leftStyle?: CSSProperties | undefined;
-	rightStyle?: CSSProperties | undefined;
 	key = 'resize';
 	icon = 'resize';
 	name = 'Resize';

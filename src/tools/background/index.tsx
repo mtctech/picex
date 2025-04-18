@@ -3,8 +3,6 @@ import Icon from './icon.svg?react';
 import Panel from './components/Panel';
 import './index.css';
 import { PicexToolBackgroundProps } from './types';
-import { PicexDesign } from '@/components/Design';
-import { CSSProperties, PropsWithChildren } from 'react';
 import locale from '@/locale';
 
 export class PicexToolBackground extends PicexTool {
@@ -12,8 +10,6 @@ export class PicexToolBackground extends PicexTool {
 	name = locale.t('background.title');
 	visible = true;
 	disabled = false;
-	leftStyle?: CSSProperties | undefined;
-	rightStyle?: CSSProperties | undefined;
 
 	constructor(protected props?: PicexToolBackgroundProps) {
 		super();

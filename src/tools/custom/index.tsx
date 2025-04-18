@@ -10,13 +10,14 @@ export class PicexToolCustom extends PicexTool {
 
 	constructor(protected props?: PicexToolCustomProps) {
 		super();
-
 		this.key = props?.key || this.key;
 		this.name = props?.name || this.name;
+		this.disabled = props?.disabled || this.disabled;
+		this.visible = props?.visible || this.visible;
 	}
 
 	renderIcon() {
-		return <Icon />;
+		return this.props?.icon || <Icon />;
 	}
 	renderPanel({ ctx, dispatch }: IPicexToolRenderParams) {
 		return <>{this.props?.panelChildren}</>;

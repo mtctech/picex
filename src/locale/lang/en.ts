@@ -1,6 +1,6 @@
 export default {
 	uploadNewImage: 'Upload a new image',
-	download: 'download',
+	download: 'Download',
 	background: {
 		title: 'Background',
 		panel: {

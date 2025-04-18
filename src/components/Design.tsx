@@ -1,4 +1,9 @@
-import React, { PropsWithChildren, useCallback, useEffect } from 'react';
+import React, {
+	Fragment,
+	PropsWithChildren,
+	useCallback,
+	useEffect,
+} from 'react';
 import { WaterMark } from '@/blocks/WaterMark';
 import { useWaterMark } from '@/hooks/useWaterMark';
 import { usePicexCtx, usePicexDispatch } from '@/core/context';
@@ -25,6 +30,8 @@ export interface DesignProps {
 	childrenZeroBlock?: React.ReactNode;
 	onlyChildren?: boolean;
 	lang?: string;
+	childNode?: { [key: string]: React.ReactNode };
+	activeToolKey?: string;
 }
 
 /**
@@ -45,6 +52,8 @@ export function PicexDesign({
 	childrenZeroBlock,
 	enableOperators = true,
 	onlyChildren = false,
+	childNode,
+	activeToolKey,
 }: PropsWithChildren<DesignProps>) {
 	const { blocks } = usePicexCtx();
 	const dispatch = usePicexDispatch();
@@ -138,7 +147,19 @@ export function PicexDesign({
 					)}
 				</div>
 			</div>
-			<div className={cn('h-full', { hidden: !onlyChildren })}>{children}</div>
+			{/* 全部渲染子节点 但是只显示activeToolKey的子节点 */}
+			<div className={cn('h-full', { hidden: !onlyChildren })}>
+				{Object.entries(childNode ?? {}).map(([key, value]) => {
+					return (
+						<div
+							key={key}
+							className={cn({ hidden: key !== activeToolKey })}
+						>
+							{value}
+						</div>
+					);
+				})}
+			</div>
 		</div>
 	);
 }

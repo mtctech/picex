@@ -32,6 +32,7 @@ export function PicexEditor({
 	onlyChildren = false,
 	onToolChange,
 	lang = 'en',
+	childNode,
 }: DesignProps &
 	PropsWithChildren<{
 		lang?: string;
@@ -56,6 +57,7 @@ export function PicexEditor({
 			rightClassName?: string;
 			contentClassName?: string;
 		};
+		childNode?: { [key: string]: React.ReactNode };
 	}>) {
 	const [state, dispatch] = useReducer(reducer, DefaultPicexContext);
 	const [selectedTool, setSelectedTool] = useState<string | null>(
@@ -100,7 +102,9 @@ export function PicexEditor({
 					{...layout}
 				>
 					<PicexDesign
+						activeToolKey={activeToolKey}
 						onlyChildren={onlyChildren}
+						childNode={childNode}
 						childrenZeroBlock={childrenZeroBlock}
 						images={images}
 						watermark={watermark}

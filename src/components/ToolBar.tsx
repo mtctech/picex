@@ -59,7 +59,7 @@ export function PicexToolBar({
 				return {
 					key: tool.key,
 					label: (
-						<span className="max-w-12 inline-flex flex-col items-center gap-1">
+						<span className="max-w-14 inline-flex flex-col items-center gap-1">
 							<i
 								className={cn(
 									'w-12 h-12 rounded-full overflow-hidden flex items-center justify-center',
