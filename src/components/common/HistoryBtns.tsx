@@ -41,7 +41,7 @@ export function HistoryBtns() {
 		'w-[3.125rem] h-[3.125rem] p-0 flex items-center justify-center border-none rounded-lg';
 
 	return (
-		<aside className="absolute z-10 top-14 lg:top-[4.5rem] left-1/2 -translate-x-1/2 flex items-center justify-start gap-2">
+		<aside className="absolute z-10 top-14 left-1/2 -translate-x-1/2 flex items-center justify-start gap-2">
 			<div className="flex items-center gap-4">
 				<Button
 					color="default"
