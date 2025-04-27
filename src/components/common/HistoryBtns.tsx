@@ -12,7 +12,7 @@ const events = [
 	'history:clear',
 ] as const;
 
-export function HistoryBtns() {
+export function HistoryBtns({ maxport }: { maxport?: Size }) {
 	const [count, setCount] = useState(0);
 	const { fcanvas } = usePicexCtx();
 	const { historyUndo = [], historyRedo = [] } = fcanvas?.history ?? {};
@@ -41,7 +41,12 @@ export function HistoryBtns() {
 		'w-[3.125rem] h-[3.125rem] p-0 flex items-center justify-center border-none rounded-lg';
 
 	return (
-		<aside className="absolute z-10 top-14 left-1/2 -translate-x-1/2 flex items-center justify-start gap-2">
+		<aside
+			className="absolute z-10 -mt-4 top-6 lg:top-12 left-1/2 -translate-x-1/2 -translate-y-full flex items-center justify-start gap-2"
+			style={{
+				top: maxport ? `calc(50% - ${maxport.height / 2}px)` : undefined,
+			}}
+		>
 			<div className="flex items-center gap-4">
 				<Button
 					color="default"
