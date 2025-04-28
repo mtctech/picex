@@ -129,7 +129,9 @@ export function PicexDesign({
 						onChange={onChange}
 					/>
 				) : null}
-				{historable ? <HistoryBtns maxport={maxport || viewport} /> : null}
+				{historable ? (
+					<HistoryBtns maxport={blocks[0] || maxport || viewport} />
+				) : null}
 				<div
 					// ref={el}
 					className="picex-design-content h-full flex items-center justify-center"
