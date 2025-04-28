@@ -24,7 +24,7 @@ export default function PicexLayout({
 	selectedTool?: PicexTool;
 }>) {
 	return (
-		<section className="picex flex flex-col md:flex-row w-full h-full">
+		<section className="picex flex flex-col lg:flex-row w-full h-full">
 			<div
 				className={cn('relative md:w-1/3 md:max-w-[396px]', leftClassName)}
 				style={leftStyle}
