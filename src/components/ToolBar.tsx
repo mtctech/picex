@@ -84,12 +84,12 @@ export function PicexToolBar({
 						tool.renderPanel?.({ ctx, dispatch })
 					) : (
 						<>
-							<aside className="absolute z-10 left-0 mt-4">
+							<aside className="absolute z-10 left-0 ml-4 mt-4 md:ml-0">
 								<span
 									className="text-2xl text-[#666] hover:text-[#007AFF] cursor-pointer"
-									onClick={() =>
-										value && setFlags((prev) => ({ ...prev, [value]: true }))
-									}
+									onClick={() => {
+										value && setFlags((prev) => ({ ...prev, [value]: true }));
+									}}
 								>
 									<AiOutlineMenuUnfold />
 								</span>
