@@ -55,7 +55,14 @@ export async function uploadFileByBase64({
 
 export function getTransparentUnitCanvas(size = 72) {
 	const l = size / 2;
-	const canvas = new OffscreenCanvas(size, size);
+	const canvas = window?.OffscreenCanvas
+		? new OffscreenCanvas(size, size)
+		: (() => {
+				const canvas = document.createElement('canvas');
+				canvas.width = size;
+				canvas.height = size;
+				return canvas;
+			})();
 	const ctx = canvas.getContext('2d');
 	ctx!.fillStyle = '#EBEBEB';
 	ctx!.fillRect(0, 0, l, l);
