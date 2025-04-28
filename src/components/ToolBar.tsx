@@ -84,9 +84,9 @@ export function PicexToolBar({
 						tool.renderPanel?.({ ctx, dispatch })
 					) : (
 						<>
-							<aside className="absolute z-10 left-0 top-full mt-4 ml-4">
+							<aside className="absolute z-10 left-0 mt-4">
 								<span
-									className="text-2xl text-[#666] hover:text-[#007AFF]"
+									className="text-2xl text-[#666] hover:text-[#007AFF] cursor-pointer"
 									onClick={() =>
 										value && setFlags((prev) => ({ ...prev, [value]: true }))
 									}
