@@ -50,7 +50,7 @@ export function PicexToolBar({
 		<Tabs
 			size="small"
 			type="card"
-			tabPosition={sizes.lg ? 'left' : 'top'}
+			tabPosition={sizes.md ? 'left' : 'top'}
 			style={style}
 			className={cn('picex-toolbar w-full h-full', className)}
 			onChange={onToolChange}
@@ -80,7 +80,7 @@ export function PicexToolBar({
 							</span>
 						</span>
 					),
-					children: sizes.lg ? (
+					children: sizes.md ? (
 						tool.renderPanel?.({ ctx, dispatch })
 					) : (
 						<>
