@@ -67,10 +67,16 @@ declare global {
 	type IPicexDispatch = React.Dispatch<PicexContextAction>;
 }
 
-const defaultMaxPort = {
-	width: 820,
-	height: 590,
-};
+export const defaultMaxPort =
+	typeof window === 'undefined'
+		? {
+				width: 820,
+				height: 590,
+			}
+		: {
+				width: (window.screen.width * 820) / 1192,
+				height: (window.screen.height * 590) / 1192,
+			};
 
 export const DefaultPicexContext: IPicexContext = {
 	naturalSize: defaultMaxPort,
