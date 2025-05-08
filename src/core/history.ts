@@ -155,11 +155,15 @@ class FabricHistory {
 	) {
 		if (this._historyProcessing || !target || !target.evented) return;
 
+		const data = transform?.original ?? target.toObject();
+		// 对象原originXY是left,top，但缩放后original里是right,bottom（非预期）
+		// 这两个属性会影响缩放后中心点的计算，先移除
+		const { originX, originY, ...rest } = data;
 		const snapshot = {
 			type,
 			object: target,
 			index: this.canvas.getObjects().indexOf(target),
-			data: transform?.original ?? target.toObject(),
+			data: rest,
 		};
 
 		this.append(snapshot);
