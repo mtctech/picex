@@ -39,7 +39,7 @@ const init = (state: IPicexContext, action: PicexContentActionInit) => {
 		blockViewport,
 		...images.map(({ url, width, height }) => {
 			const img = new Image();
-			img.crossOrigin = 'anonymous';
+			img.crossOrigin = 'use-credentials';
 			img.src = url;
 
 			const block = new BlockImage(img, {
