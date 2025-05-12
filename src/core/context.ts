@@ -28,6 +28,7 @@ declare global {
 		images: Array<
 			Size & {
 				url: string;
+				loadedImage?: HTMLImageElement;
 			}
 		>;
 		naturalSize?: Size;

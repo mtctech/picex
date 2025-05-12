@@ -16,6 +16,7 @@ import {
 	UploadChangeInfo,
 } from './common/UploadBox';
 import { HistoryBtns } from './common/HistoryBtns';
+import { useImageLoader } from '@/hooks/useImageLoader';
 
 import './Design.css';
 export interface DesignProps {
@@ -57,6 +58,8 @@ export function PicexDesign({
 }: PropsWithChildren<DesignProps>) {
 	const { blocks } = usePicexCtx();
 	const dispatch = usePicexDispatch();
+	const { loadImages } = useImageLoader();
+	// const [loadedImagesState, setLoadedImagesState] = useState(null);
 	// const el = useRef<HTMLDivElement>(null);
 	// const size = useSize(el);
 	const onChange = useCallback(
@@ -85,12 +88,31 @@ export function PicexDesign({
 
 	useEffect(() => {
 		if (images?.length && viewport) {
-			dispatch({
-				type: 'init',
-				images,
-				naturalSize: viewport,
-				displaySize: maxport,
-			});
+			// 先加载图片，然后再初始化
+			loadImages(images)
+				.then((loadedImages) => {
+					console.log(loadedImages, 'loadedImages');
+					dispatch({
+						type: 'init',
+						images: images.map((img, index) => ({
+							...img,
+							loadedImage: loadedImages[index],
+						})),
+						naturalSize: viewport,
+						displaySize: maxport,
+					});
+					console.log('useWaterMark');
+				})
+				.catch((error) => {
+					console.error('Failed to load images:', error);
+					// 如果加载失败，仍然使用原始图片进行初始化
+					dispatch({
+						type: 'init',
+						images,
+						naturalSize: viewport,
+						displaySize: maxport,
+					});
+				});
 		} else {
 			dispatch({
 				type: 'cover',

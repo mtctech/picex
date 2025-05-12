@@ -35,17 +35,21 @@ const init = (state: IPicexContext, action: PicexContentActionInit) => {
 	// const height = Math.max(...images.map((image) => image.height));
 	const viewport = !size ? maxSize! : getScaledFitSize(size, maxSize!);
 	const blockViewport = new BlockViewport(viewport);
+
 	const nextBlocks = [
 		blockViewport,
-		...images.map(({ url, width, height }) => {
-			const img = new Image();
-			img.crossOrigin = 'use-credentials';
-			img.src = url;
+		...images.map(({ url, width, height, loadedImage }) => {
+			const img = loadedImage || new Image();
+			if (!loadedImage) {
+				img.crossOrigin = 'use-credentials';
+				img.src = url;
+			}
 
 			const block = new BlockImage(img, {
 				width,
 				height,
 			});
+
 			scaleToFitSize(block, viewport);
 			return block;
 		}),
@@ -81,6 +85,7 @@ const addWatermark = (
 	state: IPicexContext,
 	action: PicexContentActionAddWatermark,
 ) => {
+	debugger;
 	const { blocks } = state;
 	const { block: blockWaterMark } = action;
 	const lastBlock = blocks[blocks.length - 1];
