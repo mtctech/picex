@@ -1,11 +1,12 @@
 import { IPicexToolRenderParams } from '../../types';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Colours from './Colours';
 import Images from './Images';
 import { Segmented } from 'antd';
 import { UploadBoxProps } from '@/components/common/UploadBox';
 import { BlockBackground } from '@/blocks/Background';
 import locale from '@/locale';
+import EventBus from '@/utils/eventBus';
 
 function Panel({
 	config,
@@ -18,6 +19,17 @@ function Panel({
 
 	const [tab, setTab] = useState(Tabs.Colour);
 	const [block, setBlock] = useState<BlockBackground | null>(null);
+
+	useEffect(() => {
+		const eventBusListener = () => {
+			setBlock(null);
+		};
+		EventBus.on('reset-state', eventBusListener);
+
+		return () => {
+			EventBus.off('reset-state', eventBusListener);
+		};
+	}, []);
 
 	let node;
 	switch (tab) {

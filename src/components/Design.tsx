@@ -17,6 +17,7 @@ import {
 } from './common/UploadBox';
 import { HistoryBtns } from './common/HistoryBtns';
 import { useImageLoader } from '@/hooks/useImageLoader';
+import eventBus from '@/utils/eventBus';
 
 import './Design.css';
 export interface DesignProps {
@@ -101,7 +102,8 @@ export function PicexDesign({
 						naturalSize: viewport,
 						displaySize: maxport,
 					});
-					console.log('useWaterMark');
+					//增加eventbus
+					eventBus.emit('reset-state');
 				})
 				.catch((error) => {
 					console.error('Failed to load images:', error);
