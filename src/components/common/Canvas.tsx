@@ -92,6 +92,10 @@ export function PicexCanvas({ children }: PropsWithChildren) {
 		});
 		fcanvas.clipPath = nextBlocks[0];
 		fcanvas.renderAll();
+		//通过调用多次，解决水印偶现不加载问题
+		requestAnimationFrame(() => {
+			fcanvas.renderAll();
+		});
 
 		if (isInit) {
 			fcanvas.history?.enable();
