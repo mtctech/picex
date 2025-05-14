@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-
+import { isSameSecondLevelDomain } from '@/utils/dom';
 interface ImageInfo {
 	url: string;
 	width: number;
@@ -11,7 +11,11 @@ export const useImageLoader = () => {
 		(imageInfo: ImageInfo): Promise<HTMLImageElement> => {
 			return new Promise((resolve, reject) => {
 				const img = new Image();
-				img.crossOrigin = 'use-credentials';
+				if (isSameSecondLevelDomain(imageInfo.url, window.location.origin)) {
+					img.crossOrigin = 'use-credentials';
+				} else {
+					img.crossOrigin = 'anonymous';
+				}
 				img.onload = () => resolve(img);
 				img.onerror = reject;
 				img.src = imageInfo.url;

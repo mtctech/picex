@@ -1,7 +1,7 @@
 import { BlockViewport, BlockImage, BlockWaterMark } from '@/blocks';
 import { getScaledFitSize, scaleToFitSize } from '@/utils/scale';
 import { wrapHistory } from './history';
-
+import { isSameSecondLevelDomain } from '@/utils/dom';
 export const reducer = wrapHistory(
 	(state: IPicexContext, action: PicexContextAction) => {
 		switch (action.type) {
@@ -41,7 +41,11 @@ const init = (state: IPicexContext, action: PicexContentActionInit) => {
 		...images.map(({ url, width, height, loadedImage }) => {
 			const img = loadedImage || new Image();
 			if (!loadedImage) {
-				img.crossOrigin = 'use-credentials';
+				if (isSameSecondLevelDomain(url, window.location.origin)) {
+					img.crossOrigin = 'use-credentials';
+				} else {
+					img.crossOrigin = 'anonymous';
+				}
 				img.src = url;
 			}
 
@@ -85,7 +89,6 @@ const addWatermark = (
 	state: IPicexContext,
 	action: PicexContentActionAddWatermark,
 ) => {
-	debugger;
 	const { blocks } = state;
 	const { block: blockWaterMark } = action;
 	const lastBlock = blocks[blocks.length - 1];
