@@ -7,7 +7,7 @@ import { UploadBoxProps } from '@/components/common/UploadBox';
 import { BlockBackground } from '@/blocks/Background';
 import locale from '@/locale';
 import EventBus from '@/utils/eventBus';
-
+import { usePicexCtx, usePicexDispatch } from '@/core/context';
 function Panel({
 	config,
 	...props
@@ -16,18 +16,37 @@ function Panel({
 		Colour: locale.t('background.panel.colour'),
 		Image: locale.t('background.panel.image'),
 	};
+	const dispatch = usePicexDispatch();
 
 	const [tab, setTab] = useState(Tabs.Colour);
 	const [block, setBlock] = useState<BlockBackground | null>(null);
 
 	useEffect(() => {
-		const eventBusListener = () => {
+		const resetStateListener = () => {
 			setBlock(null);
 		};
-		EventBus.on('reset-state', eventBusListener);
-
+		const backgroundRemoveListener = (targetBlock: BlockBackground) => {
+			if (targetBlock) {
+				dispatch({
+					type: 'removeBlock',
+					block: targetBlock,
+				});
+			}
+			setBlock(null);
+		};
+		const historyOperationListener = (operation: {
+			undoing: boolean;
+			action: any;
+		}) => {
+			console.log(operation, 'operation');
+		};
+		EventBus.on('reset-state', resetStateListener);
+		EventBus.on('background:remove', backgroundRemoveListener);
+		EventBus.on('history:operation', historyOperationListener);
 		return () => {
-			EventBus.off('reset-state', eventBusListener);
+			EventBus.off('reset-state', resetStateListener);
+			EventBus.off('background:remove', backgroundRemoveListener);
+			EventBus.off('history:operation', historyOperationListener);
 		};
 	}, []);
 

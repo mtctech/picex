@@ -2,6 +2,9 @@ import { IBlock } from '@/blocks';
 import * as fabric from 'fabric';
 import { SerializedObjectProps } from 'fabric';
 import { Reducer } from 'react';
+import EventBus from '@/utils/eventBus';
+import { BlockTypes } from '@/blocks/types';
+import eventBus from '@/utils/eventBus';
 
 declare module 'fabric' {
 	interface Canvas {
@@ -32,7 +35,8 @@ type HistoryAction = () => HistoryAction | Promise<HistoryAction>;
 type HistoryItem =
 	| {
 			type: HistoryTypes;
-			object: fabric.FabricObject;
+			//扩展属性 object.blockType为BlockTypes
+			object: fabric.FabricObject & { blockType: BlockTypes };
 			data: ReturnType<fabric.FabricObject['toObject']>;
 			index: number;
 	  }
@@ -113,6 +117,10 @@ class FabricHistory {
 				this.historyRedo = [];
 			}
 		}
+		eventBus.emit('history:operation', {
+			undoing,
+			action: item,
+		});
 		this.canvas.fire('history:append');
 	}
 
@@ -146,7 +154,7 @@ class FabricHistory {
 			target,
 			transform,
 		}: {
-			target: fabric.FabricObject;
+			target: fabric.FabricObject & { blockType: BlockTypes };
 			transform?: {
 				original?: fabric.Transform['original'];
 			};
@@ -177,11 +185,19 @@ class FabricHistory {
 		const { object, type, data, index } = snapshot;
 		switch (type) {
 			case HistoryTypes.ADDED:
+				if (object.blockType === BlockTypes.Background) {
+					EventBus.emit('background:remove', object);
+				}
 				this.canvas.remove(object);
 				break;
 			case HistoryTypes.REMOVED:
 				this.canvas.add(object);
-				this.canvas.moveObjectTo(object, index);
+				//Background移除后重新添加到画布上，位置为数组第二个
+				if (object.blockType === BlockTypes.Background) {
+					this.canvas.moveObjectTo(object, 1);
+				} else {
+					this.canvas.moveObjectTo(object, index);
+				}
 				break;
 			case HistoryTypes.MODIFIED:
 				const target = this.canvas._objects.find(

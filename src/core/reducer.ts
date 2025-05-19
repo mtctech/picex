@@ -18,7 +18,7 @@ export const reducer = wrapHistory(
 			case 'updateBlock':
 				return updateBlock(state, action);
 			case 'removeBlock':
-				return state;
+				return removeBlock(state, action);
 			default:
 				return state;
 		}
@@ -129,5 +129,19 @@ const updateBlock = (
 	return {
 		...state,
 		blocks: [...blocks],
+	};
+};
+
+const removeBlock = (
+	state: IPicexContext,
+	action: PicexContentActionRemoveBlock,
+) => {
+	const { blocks } = state;
+	const { block: removedBlock } = action;
+	const nextBlocks = blocks.filter((block) => block !== removedBlock);
+
+	return {
+		...state,
+		blocks: nextBlocks,
 	};
 };
