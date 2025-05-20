@@ -75,8 +75,8 @@ export const defaultMaxPort =
 				height: 590,
 			}
 		: {
-				width: (window.screen.width * 820) / 1192,
-				height: (window.screen.height * 590) / 1192,
+				width: (window.innerWidth * 820) / 1192,
+				height: (window.innerHeight * 590) / 1192,
 			};
 
 export const DefaultPicexContext: IPicexContext = {

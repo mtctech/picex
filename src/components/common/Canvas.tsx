@@ -17,8 +17,8 @@ export function PicexCanvas({ children }: PropsWithChildren) {
 			return;
 		}
 		const fcanvas = new Canvas(elCanvas.current!, {
-			width: window.screen.width,
-			height: window.screen.height,
+			width: window.innerWidth,
+			height: window.innerHeight,
 			backgroundColor: 'transparent',
 			hoverCursor: 'default',
 			// clip时忽略controls部分
