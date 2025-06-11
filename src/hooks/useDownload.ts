@@ -23,8 +23,12 @@ export function useDownload(
 				width: viewport.width,
 				height: viewport.height,
 			};
+
+			console.log(fcanvas, 'fcanvas');
+
 			const objects = (await Promise.all(
-				others
+				fcanvas
+					.getObjects()
 					.filter((block) => !(block instanceof BlockWaterMark))
 					.map((x) => x.clone()),
 			)) as Exclude<Block, BlockViewport>[];
